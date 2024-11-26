@@ -209,8 +209,9 @@ img {
 }
 .home__img {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 80px; /* Diminuez la valeur pour déplacer l'image vers la gauche */
+  bottom: 10px;
+  top: 180px;
   width: 260px;
 }
 .home__blob {
