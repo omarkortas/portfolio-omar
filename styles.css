@@ -209,7 +209,7 @@ img {
 }
 .home__img {
   position: absolute;
-  right: 80px; /* Diminuez la valeur pour déplacer l'image vers la gauche */
+  right: 20px; /* Diminuez la valeur pour déplacer l'image vers la gauche */
   bottom: 10px;
   top: 180px;
   width: 260px;
@@ -366,7 +366,7 @@ img {
 }
 
 /* ===== MEDIA QUERIES=====*/
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 576px) {
   .home {
     row-gap: 2rem;
   }
@@ -483,6 +483,3 @@ img {
     width: 450px;
   }
 }
-
-
-
