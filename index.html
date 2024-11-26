@@ -2,9 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Correction du meta-tag -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <link rel="stylesheet" href="styles.css">
         <link rel="icon" type="image/png" href="omar.png">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
         <!-- =====BOX ICONS===== -->
         <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
@@ -52,14 +54,15 @@
             <!--===== HOME =====-->
             <section class="home bd-grid" id="home">
                 <div class="home__data">
-                    <h1 class="home__title">Hi,<br>I am <span class="home__title-color">Omar</span> computer <br> engineering <br> student</h1>
+                    <h1 class="home__title">Hi,<br>I am <span class="home__title-color">Omar</span><br> computer engineering <br> student</h1>
                     <a href="#contact" class="button">Contact</a>
                 </div>
 
                 <div class="home__social">
-                    <a href="#" class="home__social-icon"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" class="home__social-icon"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://github.com/omarkortas" class="home__social-icon"><i class='bx bxl-github'></i></a>
+
                     <a href="#" class="home__social-icon"><i class='bx bxl-behance'></i></a>
-                    <a href="#" class="home__social-icon"><i class='bx bxl-github'></i></a>
                 </div>
             </section>
 
@@ -72,8 +75,8 @@
                         <img src="om.jpg" alt="Omar">
                     </div>
                     <div>
-                        <h1 class="about__subtitle">I am Omar</h1>
-                        <p class="about__text">I am a motivated student, passionate about my study of computer systems engineering, and I am looking for an internship opportunity that will allow me to gain valuable experience in this field. I am convinced that my enthusiasm, my determination, and my ability to adapt make me an ideal candidate for this internship opportunity.</p>           
+                        <center><strong><h1 class="about__subtitle">I am Omar</h1></strong></center>
+                        <center><strong><p class="about__text">Throughout my life, I have been a motivated student: and, not surprisingly, very passionate about my study of computers and systems engineering. I am now seeking an internship opportunity that is beneficial for adding valuable experience to my career. The enthusiasm, determination, and adaptability that I possess form a strong case for me to secure this internship. </p> </strong>         </center> 
                     </div>
                 </div>
             </section>
@@ -87,27 +90,32 @@
                         <div class="skills__data">
                             <div class="skills__names">
                                 <i class='bx bxl-html5 skills__icon'></i>
+                                <i class='bx bxl-javascript skills__icon'></i>
+                                <i class='bx bxl-css3 skills__icon'></i>
+
                                 <span class="skills__name">HTML/CSS/JS</span>
                             </div>
                             <div class="skills__bar skills__html"></div>
                         </div>
                         <div class="skills__data">
                             <div class="skills__names">
-                                <i class='bx bxl-css3 skills__icon'></i>
+                                <i class='bx bxs-data skills__icon'></i>
+                                <i class='bx bxl-nodejs skills__icon' style="color:#466799;"></i>
                                 <span class="skills__name">SQL/Node JS</span>
                             </div>
                             <div class="skills__bar skills__css"></div>
                         </div>
                         <div class="skills__data">
                             <div class="skills__names">
-                                <i class='bx bxl-javascript skills__icon'></i>
-                                <span class="skills__name">React JS/Angular</span>
+                                <i class="fab fa-python skills__icon"></i>
+                                <i class='bx bxl-react skills__icon'></i>
+                                <span class="skills__name">java/React JS/Angular/python</span>
                             </div>
                             <div class="skills__bar skills__js"></div>
                         </div>
                         <div class="skills__data">
                             <div class="skills__names">
-                                <i class='bx bxs-paint skills__icon'></i>
+                                <i class="fas fa-file-word skills__icon" style="color:#2B579A;"></i>
                                 <span class="skills__name">Microsoft Office</span>
                             </div>
                             <div class="skills__bar skills__ux"></div>
@@ -161,4 +169,20 @@
             </section>
         </main>
 
-        <!--===
+        <!--===== FOOTER =====-->
+        <footer class="footer">
+            <p class="footer__title">Omar El Farouk</p>
+            <div class="footer__social">
+                <a href="#" class="footer__icon"><i class='bx bxl-facebook'></i></a>
+                <a href="#" class="footer__icon"><i class='bx bxl-instagram'></i></a>
+                <a href="#" class="footer__icon">
+                    <i class="fas fa-times"></i>
+                </a>
+                
+            </div>
+            <p class="footer__copy">&#169; Merci de visiter mon site web</p>
+        </footer>
+
+        <script src="main.js"></script>
+    </body>
+</html>
