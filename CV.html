@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intégrer un PDF</title>
+    <style>
+        /* Style général */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background:linear-gradient(90deg,rgb(0, 204, 255),rgb(255, 255, 255)) ;
+        }
+
+        h1 {
+            color: #444;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        /* Style du conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Style pour le lien de téléchargement */
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style pour l'iframe */
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            margin-top: 20px;
+        }
+
+        /* Message d'alternative */
+        .alt-message {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .button-b {
+            background-color: #007BFF;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Effet au survol */
+        .button-b:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Effet au clic */
+        .button-b:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Bouton focus (accessibilité) */
+        .button-b:focus {
+            outline: 2px solid #0056b3;
+            outline-offset: 2px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            iframe {
+                height: 400px;
+            }
+
+            .alt-message {
+                font-size: 0.8em;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Afficher et Télécharger un PDF</h1>
+        <p>Cliquez sur le lien ci-dessous pour télécharger le PDF :</p>
+        <a href="Omar-El-Farouk-KORTAS-Resume.pdf" download>Télécharger le PDF</a>
+
+        <p>Ou visualisez-le directement ici :</p>
+        <iframe src="Omar-El-Farouk-KORTAS-Resume.pdf"></iframe>
+
+        <p class="alt-message">
+            Si le PDF ne s'affiche pas, <a href="Omar-El-Farouk-KORTAS-Resume.pdf">cliquez ici pour le voir ou le télécharger</a>.
+        </p>
+        <a  href="index.html"><button class="button-b">back</button></a>
+
+    </div>
+
+</body>
+</html>
