@@ -26,7 +26,6 @@
             text-align: center;
         }
 
-        /* Style du conteneur principal */
         .container {
             width: 90%;
             max-width: 800px;
@@ -37,7 +36,6 @@
             border-radius: 8px;
         }
 
-        /* Style pour le lien de téléchargement */
         a {
             text-decoration: none;
             color: #fff;
@@ -54,7 +52,6 @@
             background-color: #0056b3;
         }
 
-        /* Style pour la vidéo */
         video {
             width: 100%;
             height: auto;
@@ -63,7 +60,6 @@
             border-radius: 8px;
         }
 
-        /* Bouton personnalisé */
         .button-b {
             background-color: #007BFF;
             color: white;
@@ -76,26 +72,22 @@
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
 
-        /* Effet au survol */
         .button-b:hover {
             background-color: #0056b3;
             transform: scale(1.05);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
 
-        /* Effet au clic */
         .button-b:active {
             transform: scale(0.95);
             box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Bouton focus (accessibilité) */
         .button-b:focus {
             outline: 2px solid #0056b3;
             outline-offset: 2px;
         }
 
-        /* Responsive Design */
         @media (max-width: 600px) {
             h1 {
                 font-size: 1.5rem;
@@ -116,14 +108,19 @@
     <div class="container">
         <h1>CV Vidéo</h1>
         <p>Cliquez sur le lien ci-dessous pour télécharger la vidéo de votre CV :</p>
-        <a href="cv-video.mp4" download>Télécharger le CV Vidéo</a>
+        <a href="https://drive.google.com/uc?export=download&id=1UT6dGF4ORhCnzvyReknFiC0dbJKTjmc6" download>
+            Télécharger le CV Vidéo
+        </a>
 
         <p>Ou visionnez-le directement ici :</p>
-        <video controls>
-            <source src="cv-video.mp4" type="video/mp4">
-            Votre navigateur ne supporte pas la lecture des vidéos. 
-            <a href="cv-video.mp4">Cliquez ici pour télécharger la vidéo.</a>
-        </video>
+        <iframe 
+            src="https://drive.google.com/file/d/1UT6dGF4ORhCnzvyReknFiC0dbJKTjmc6/preview" 
+            width="100%" 
+            height="480" 
+            frameborder="0" 
+            allowfullscreen>
+        </iframe>
+        
 
         <a href="index.html"><button class="button-b">Back</button></a>
     </div>
