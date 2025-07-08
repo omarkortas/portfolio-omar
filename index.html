@@ -593,30 +593,63 @@ const Projects = () => {
     );
 };
         // Composant pour les statistiques
-        const Stats = () => {
-            const stats = [
-                { value: 10, label: "Projets Terminés", icon: "fas fa-project-diagram" },
-                { value: 2, label: "Années d'Expérience", icon: "fas fa-calendar-alt" },
-                { value: 10, label: "Technologies Maîtrisées", icon: "fas fa-code" },
-                { value: 6, label: "Clients Satisfaits", icon: "fas fa-smile" }
-            ];
+       const Stats = () => {
+    const stats = [
+        { value: 10, label: 'Projets Terminés', icon: 'fas fa-project-diagram', accent: 'blue-500' },
+        { value: 1, label: 'Années d\'Expérience', icon: 'fas fa-calendar-alt', accent: 'purple-500' },
+        { value: 10, label: 'Technologies Maîtrisées', icon: 'fas fa-code', accent: 'blue-500' },
+        { value: 6, label: 'Clients Satisfaits', icon: 'fas fa-smile', accent: 'purple-500' }
+    ];
 
-            return (
-                <Section id="statistiques" title="Statistiques" dark={false}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {stats.map((stat, index) => (
-                            <FadeIn key={stat.label} delay={index * 0.1}>
-                                <div className="bg-gray-800 bg-opacity-50 backdrop-blur-lg p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300 transform hover:-translate-y-2 hover:shadow-lg text-center">
-                                    <i className={`${stat.icon} text-blue-400 text-3xl mb-4`}></i>
-                                    <h3 className="text-2xl font-bold text-white mb-2">{stat.value}</h3>
-                                    <p className="text-gray-300 text-sm">{stat.label}</p>
-                                </div>
-                            </FadeIn>
-                        ))}
-                    </div>
-                </Section>
-            );
+    // State for animated number increment
+    const [counts, setCounts] = useState(stats.map(() => 0));
+
+    useEffect(() => {
+        const animateCounts = () => {
+            const intervals = stats.map((stat, index) => {
+                const increment = stat.value / 50; // Adjust for smoother animation
+                return setInterval(() => {
+                    setCounts((prev) => {
+                        const newCounts = [...prev];
+                        if (newCounts[index] < stat.value) {
+                            newCounts[index] = Math.min(newCounts[index] + increment, stat.value);
+                        }
+                        return newCounts;
+                    });
+                }, 20); // Adjust speed of animation
+            });
+
+            return () => intervals.forEach(clearInterval); // Cleanup
         };
+
+        animateCounts();
+    }, [stats]);
+
+    return (
+        <Section id="statistiques" title="Statistiques" dark={false}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-10 px-4">
+                {stats.map((stat, index) => (
+                    <FadeIn key={stat.label} delay={index * 0.2}>
+                        <div
+                            className={`bg-gray-900 bg-opacity-60 backdrop-blur-xl p-8 rounded-2xl border border-gray-700 hover:border-${stat.accent} transition-all duration-500 transform hover:-translate-y-3 hover:shadow-xl hover:shadow-${stat.accent}/20 text-center cursor-pointer`}
+                            role="region"
+                            aria-label={`Statistique: ${stat.label}`}
+                        >
+                            <i
+                                className={`${stat.icon} text-${stat.accent} text-4xl mb-6 transition-transform duration-300 hover:scale-110`}
+                                aria-label={`Icône pour ${stat.label}`}
+                            ></i>
+                            <h3 className="text-4xl font-extrabold text-white mb-3">
+                                {Math.round(counts[index])}
+                            </h3>
+                            <p className="text-gray-100 text-base font-semibold">{stat.label}</p>
+                        </div>
+                    </FadeIn>
+                ))}
+            </div>
+        </Section>
+    );
+};
 
         // Section Contact améliorée
         const Contact = () => {
