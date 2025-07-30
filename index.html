@@ -266,7 +266,7 @@
                                 </h1>
                             </div>
                             <div className="hero-subheading">
-                                <p className="text-lg sm:text-xl mb-6 text-gray-300">Computer engineer</p>
+                                <p className="text-lg sm:text-xl mb-6 text-gray-300">Ingénieur Informatique & Développeur</p>
                                 <div className="typewriter inline-block mb-8">
                                     <p className="text-md sm:text-lg text-blue-400 font-mono border-r-2 border-blue-400 whitespace-nowrap overflow-hidden animate-typing">
                                         Je transforme les idées en solutions.
@@ -651,100 +651,239 @@ const Projects = () => {
     );
 };
 
-        // Section Contact améliorée
         const Contact = () => {
-            const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-            const [status, setStatus] = useState("");
+    const [formData, setFormData] = useState({ 
+        name: "", 
+        email: "", 
+        message: "" 
+    });
+    const [status, setStatus] = useState({ 
+        message: "", 
+        type: "" 
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-            const handleChange = (e) => {
-                setFormData({ ...formData, [e.target.name]: e.target.value });
-            };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                setStatus("Message envoyé ! Je vous répondrai bientôt.");
-                setFormData({ name: "", email: "", message: "" });
-                setTimeout(() => setStatus(""), 5000);
-            };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        // Validation client rapide
+        if (!formData.name || !formData.email || !formData.message) {
+            setStatus({
+                message: "Veuillez remplir tous les champs",
+                type: "error"
+            });
+            return;
+        }
 
-            return (
-                <Section id="contact" title="Contact" dark={true}>
-                    <div className="grid md:grid-cols-2 gap-12">
-                        <FadeIn direction="left">
-                            <div>
-                                <h3 className="text-2xl font-semibold mb-4 text-blue-400">Prenons contact</h3>
-                                <p className="text-gray-300 mb-6">Vous avez un projet ou une idée ? N'hésitez pas à me contacter !</p>
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <i className="fas fa-envelope text-blue-400"></i>
-                                        <a href="mailto:omar@example.com" className="text-gray-300 hover:text-blue-400">omaromarkortas@gmail.com</a>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <i className="fas fa-phone text-blue-400"></i>
-                                        <a href="tel:+1234567890" className="text-gray-300 hover:text-blue-400">+216 99 749 793</a>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <i className="fab fa-linkedin text-blue-400"></i>
-                                        <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" className="text-gray-300 hover:text-blue-400">LinkedIn</a>
-                                    </div>
+        setIsSubmitting(true);
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name.trim(),
+                    email: formData.email.trim(),
+                    message: formData.message.trim()
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de l'envoi du message");
+            }
+
+            setStatus({ 
+                message: data.message || "Message envoyé avec succès !", 
+                type: "success" 
+            });
+            setFormData({ name: "", email: "", message: "" });
+            
+        } catch (error) {
+            console.error("Erreur:", error);
+            setStatus({ 
+                message: error.message || "Erreur de connexion au serveur", 
+                type: "error" 
+            });
+        } finally {
+            setIsSubmitting(false);
+            // Effacer le message après 5 secondes
+            const timer = setTimeout(() => {
+                setStatus({ message: "", type: "" });
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    };
+
+    return (
+        <Section id="contact" title="Contact" dark={true}>
+            <div className="grid md:grid-cols-2 gap-12">
+                <FadeIn direction="left">
+                    <div className="space-y-6">
+                        <h3 className="text-2xl font-semibold text-blue-400">Prenons contact</h3>
+                        <p className="text-gray-300">
+                            Vous avez un projet ou une question ? N'hésitez pas à me contacter, je vous répondrai dès que possible.
+                        </p>
+                        
+                        <div className="space-y-4 mt-6">
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1 text-blue-400">
+                                    <i className="fas fa-envelope text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-gray-200 font-medium">Email</h4>
+                                    <a href="mailto:omaromarkortas@gmail.com" className="text-gray-400 hover:text-blue-400 transition">
+                                        omaromarkortas@gmail.com
+                                    </a>
                                 </div>
                             </div>
-                        </FadeIn>
-                        <FadeIn direction="right" delay={0.2}>
-                            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-lg p-6 rounded-xl border border-gray-700">
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div>
-                                        <label htmlFor="name" className="block text-sm font-medium text-gray-300">Nom</label>
-                                        <input
-                                            type="text"
-                                            id="name"
-                                            name="name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            required
-                                            className="mt-1 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email</label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            required
-                                            className="mt-1 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="message" className="block text-sm font-medium text-gray-300">Message</label>
-                                        <textarea
-                                            id="message"
-                                            name="message"
-                                            value={formData.message}
-                                            onChange={handleChange}
-                                            required
-                                            rows="4"
-                                            className="mt-1 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                        ></textarea>
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
-                                    >
-                                        Envoyer
-                                    </button>
-                                </form>
-                                {status && (
-                                    <p className="mt-4 text-blue-400 text-center">{status}</p>
-                                )}
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1 text-blue-400">
+                                    <i className="fas fa-phone text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-gray-200 font-medium">Téléphone</h4>
+                                    <a href="tel:+21699749793" className="text-gray-400 hover:text-blue-400 transition">
+                                        +216 99 749 793
+                                    </a>
+                                </div>
                             </div>
-                        </FadeIn>
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1 text-blue-400">
+                                    <i className="fab fa-linkedin text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-gray-200 font-medium">LinkedIn</h4>
+                                    <a 
+                                        href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-gray-400 hover:text-blue-400 transition"
+                                    >
+                                        Omar El Farouk Kortas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </Section>
-            );
-        };
+                </FadeIn>
+
+                <FadeIn direction="right" delay={0.2}>
+                    <div className="bg-gray-800 bg-opacity-50 backdrop-blur-lg p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300">
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                                    Nom complet <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                    placeholder="Votre nom"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                                    Email <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                    placeholder="votre@email.com"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                                    Message <span className="text-red-500">*</span>
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="5"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                    placeholder="Dites-moi en quoi puis-je vous aider..."
+                                ></textarea>
+                            </div>
+                            
+                            <div className="pt-2">
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className={`w-full flex justify-center items-center px-6 py-3 rounded-lg font-medium transition duration-300 ${
+                                        isSubmitting
+                                            ? 'bg-blue-700 cursor-not-allowed'
+                                            : 'bg-blue-600 hover:bg-blue-700 transform hover:scale-[1.02]'
+                                    }`}
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Envoi en cours...
+                                        </>
+                                    ) : (
+                                        'Envoyer le message'
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                        
+                        {status.message && (
+                            <div className={`mt-4 p-4 rounded-lg border ${
+                                status.type === "success" 
+                                    ? "bg-green-900/20 border-green-700 text-green-400" 
+                                    : "bg-red-900/20 border-red-700 text-red-400"
+                            }`}>
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        {status.type === "success" ? (
+                                            <i className="fas fa-check-circle"></i>
+                                        ) : (
+                                            <i className="fas fa-exclamation-circle"></i>
+                                        )}
+                                    </div>
+                                    <div>{status.message}</div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </FadeIn>
+            </div>
+        </Section>
+    );
+};
 
         // Footer amélioré
         const Footer = () => {
