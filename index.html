@@ -11,11 +11,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --card-bg: rgba(31, 41, 55, 0.5);
+            --border-color: rgba(96, 165, 250, 0.5);
+            --accent-blue: #60a5fa;
+            --accent-purple: #a855f7;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #f3f4f6;
+            --bg-secondary: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(59, 130, 246, 0.3);
+            --accent-blue: #3b82f6;
+            --accent-purple: #7c3aed;
+        }
+
         body {
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             position: relative;
             overflow-x: hidden;
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
         }
+
         .tech-background {
             position: fixed;
             top: 0;
@@ -26,6 +51,7 @@
             pointer-events: none;
             overflow: hidden;
         }
+
         .circuit-layer {
             position: absolute;
             top: 0;
@@ -34,115 +60,159 @@
             height: 100%;
             opacity: 0.15;
         }
+
         .circuit-layer svg {
             width: 100%;
             height: 100%;
         }
+
         .circuit-path {
-            stroke: #4b9cff;
+            stroke: var(--accent-blue);
             stroke-width: 2;
             fill: none;
             stroke-dasharray: 20, 10;
             animation: circuit-flow 12s linear infinite;
         }
+
         .circuit-node {
-            fill: #a855f7;
+            fill: var(--accent-purple);
             animation: node-pulse 2s ease-in-out infinite;
         }
+
         @keyframes circuit-flow {
             0% { stroke-dashoffset: 0; }
             100% { stroke-dashoffset: -30; }
         }
+
         @keyframes node-pulse {
             0%, 100% { transform: scale(1); opacity: 0.4; }
             50% { transform: scale(1.5); opacity: 0.7; }
         }
+
         .data-stream {
             position: absolute;
             width: 100%;
             height: 100%;
             opacity: 0.2;
         }
+
         .data-bit {
             position: absolute;
             width: 8px;
             height: 8px;
-            background: #60a5fa;
+            background: var(--accent-blue);
             border-radius: 50%;
             animation: data-flow 8s linear infinite;
         }
+
         @keyframes data-flow {
             0% { transform: translateY(100vh); opacity: 0.6; }
             100% { transform: translateY(-100vh); opacity: 0; }
         }
+
         .animate-typing {
             width: 0;
             animation: typing 4s steps(30, end) forwards, blink 0.5s step-end infinite;
         }
+
         @keyframes typing {
             from { width: 0; }
             to { width: 100%; }
         }
+
         .modal {
             animation: fadeIn 0.3s ease-in-out;
         }
+
         .nav-item:hover {
             transform: scale(1.05);
-            text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+            text-shadow: 0 0 8px var(--accent-blue);
         }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
+
         @keyframes blink {
             from, to { border-color: transparent; }
-            50% { border-color: #60A5FA; }
+            50% { border-color: var(--accent-blue); }
         }
+
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
+
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
             100% { transform: translateY(0px); }
         }
+
         .animate-bounce {
             animation: bounce 2s infinite;
         }
+
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
             40% { transform: translate(-50%, -10px); }
             60% { transform: translate(-50%, -5px); }
         }
+
         #particles-background {
             background: transparent;
         }
+
         .project-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             transform-style: preserve-3d;
+            background: var(--card-bg);
         }
+
         .project-card:hover {
             transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
-            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 15px 30px var(--border-color);
         }
+
         .certification-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             transform-style: preserve-3d;
+            background: var(--card-bg);
         }
+
         .certification-card:hover {
             transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
-            box-shadow: 0 15px 30px rgba(168, 85, 247, 0.3);
+            box-shadow: 0 15px 30px var(--border-color);
         }
+
         .modal-enter {
             animation: modalSlideIn 0.4s ease-out;
         }
+
         @keyframes modalSlideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
     </style>
 </head>
-<body class="font-sans antialiased text-white overflow-x-hidden">
+<body class="font-sans antialiased overflow-x-hidden" data-theme="dark">
     <div class="tech-background">
         <div class="circuit-layer">
             <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
@@ -188,6 +258,9 @@
                 return this.props.children;
             }
         }
+
+        // Theme Context
+        const ThemeContext = React.createContext();
 
         // Composant pour les animations de texte
         const AnimatedText = ({ children, delay = 0, className = "", once = true }) => {
@@ -251,11 +324,12 @@
             return <div ref={ref} className={`opacity-0 ${className}`}>{children}</div>;
         };
 
-        // Barre de navigation améliorée
+        // Barre de navigation améliorée avec bouton de thème
         const Navbar = () => {
             const [isOpen, setIsOpen] = useState(false);
             const [scrolled, setScrolled] = useState(false);
             const navbarRef = useRef(null);
+            const { theme, toggleTheme } = React.useContext(ThemeContext);
             
             const toggleMenu = () => setIsOpen(!isOpen);
             
@@ -291,8 +365,8 @@
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16 items-center">
                             <a href="#" className="group flex items-center">
-                                <span className="text-2xl font-extrabold text-white tracking-tight group-hover:text-blue-400 transition-colors duration-300">
-                                    <span className="text-blue-500">&lt;</span>Omar el farouk<span className="text-blue-500">/&gt;</span>
+                                <span className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight group-hover:text-[var(--accent-blue)] transition-colors duration-300">
+                                    <span className="text-[var(--accent-blue)]">&lt;</span>Omar el farouk<span className="text-[var(--accent-blue)]">/&gt;</span>
                                 </span>
                             </a>
                             <div className="hidden md:flex items-center space-x-6">
@@ -300,23 +374,39 @@
                                     <a
                                         key={item}
                                         href={`#${item.toLowerCase().replace(' ', '-')}`}
-                                        className="text-gray-200 hover:text-blue-400 relative overflow-hidden group text-sm font-medium"
+                                        className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] relative overflow-hidden group text-sm font-medium"
                                     >
                                         {item}
-                                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+                                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--accent-blue)] group-hover:w-full transition-all duration-300"></span>
                                     </a>
                                 ))}
+                                <button
+                                    onClick={toggleTheme}
+                                    className="theme-toggle text-[var(--text-primary)] hover:text-[var(--accent-blue)]"
+                                    title={theme === 'dark' ? 'Passer au mode clair' : 'Passer au mode sombre'}
+                                >
+                                    <i className={theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'}></i>
+                                </button>
                             </div>
-                            <button onClick={toggleMenu} className="md:hidden text-white focus:outline-none">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-                                    />
-                                </svg>
-                            </button>
+                            <div className="flex items-center md:hidden space-x-4">
+                                <button onClick={toggleMenu} className="text-[var(--text-primary)] focus:outline-none">
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
+                                        />
+                                    </svg>
+                                </button>
+                                <button
+                                    onClick={toggleTheme}
+                                    className="theme-toggle text-[var(--text-primary)] hover:text-[var(--accent-blue)]"
+                                    title={theme === 'dark' ? 'Passer au mode clair' : 'Passer au mode sombre'}
+                                >
+                                    <i className={theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'}></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     {isOpen && (
@@ -325,12 +415,18 @@
                                 <a
                                     key={item}
                                     href={`#${item.toLowerCase().replace(' ', '-')}`}
-                                    className="block px-4 py-3 text-gray-200 hover:text-blue-400 hover:bg-gray-700 text-center border-b border-gray-700 transition-colors duration-200"
+                                    className="block px-4 py-3 text-[var(--text-secondary)] hover:text-[var(--accent-blue)] hover:bg-gray-700 text-center border-b border-gray-700 transition-colors duration-200"
                                     onClick={toggleMenu}
                                 >
                                     {item}
                                 </a>
                             ))}
+                            <button
+                                onClick={toggleTheme}
+                                className="block w-full px-4 py-3 text-[var(--text-secondary)] hover:text-[var(--accent-blue)] hover:bg-gray-700 text-center border-b border-gray-700 transition-colors duration-200"
+                            >
+                                {theme === 'dark' ? 'Mode Clair' : 'Mode Sombre'}
+                            </button>
                         </div>
                     )}
                 </nav>
@@ -338,11 +434,11 @@
         };
 
         const Section = ({ id, title, children, className = "", dark = false }) => (
-            <section id={id} className={`py-24 px-4 sm:px-6 lg:px-8 ${dark ? 'bg-gray-900/50' : 'bg-gray-800/50'} relative overflow-hidden ${className}`}>
+            <section id={id} className={`py-24 px-4 sm:px-6 lg:px-8 ${dark ? 'bg-[var(--card-bg)]' : 'bg-[var(--card-bg)]'} relative overflow-hidden ${className}`}>
                 <div className="max-w-7xl mx-auto relative z-10">
                     <AnimatedText>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-12 text-center">
-                            <span className="text-blue-400">&lt;</span> {title} <span className="text-blue-400">/&gt;</span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mb-12 text-center">
+                            <span className="text-[var(--accent-blue)]">&lt;</span> {title} <span className="text-[var(--accent-blue)]">/&gt;</span>
                         </h2>
                     </AnimatedText>
                     {children}
@@ -366,37 +462,37 @@
             return (
                 <section id="accueil" ref={sectionRef} className="min-h-screen flex items-center pt-16 relative overflow-hidden">
                     <div className="absolute inset-0 z-0">
-                        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/70 via-blue-900/50 to-gray-900/70"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-primary)]/70 via-[var(--accent-blue)]/50 to-[var(--bg-primary)]/70"></div>
                     </div>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-8 relative z-10">
                         <div className="flex-1 text-center lg:text-left">
                             <div className="hero-heading">
                                 <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight">
-                                    <span className="text-blue-400">&lt;</span> Bonjour, je suis <span className="text-blue-400">Omar</span> <span className="text-blue-400">/&gt;</span>
+                                    <span className="text-[var(--accent-blue)]">&lt;</span> Bonjour, je suis <span className="text-[var(--accent-blue)]">Omar</span> <span className="text-[var(--accent-blue)]">/&gt;</span>
                                 </h1>
                             </div>
                             <div className="hero-subheading">
-                                <p className="text-lg sm:text-xl mb-6 text-gray-300">Computer Engineer</p>
+                                <p className="text-lg sm:text-xl mb-6 text-[var(--text-secondary)]">Computer Engineer</p>
                                 <div className="typewriter inline-block mb-8">
-                                    <p className="text-md sm:text-lg text-blue-400 font-mono border-r-2 border-blue-400 whitespace-nowrap overflow-hidden animate-typing">
+                                    <p className="text-md sm:text-lg text-[var(--accent-blue)] font-mono border-r-2 border-[var(--accent-blue)] whitespace-nowrap overflow-hidden animate-typing">
                                         Je transforme les idées en solutions.
                                     </p>
                                 </div>
                             </div>
                             <div className="hero-buttons flex flex-wrap justify-center lg:justify-start gap-4">
-                                <a href="CV.html" className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 text-sm font-medium transform hover:scale-105 flex items-center gap-2">
+                                <a href="CV.html" className="bg-[var(--accent-blue)] text-[var(--text-primary)] px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 text-sm font-medium transform hover:scale-105 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
                                     </svg>
                                     CV
                                 </a>
-                                <a href="CV-video.html" className="bg-transparent border-2 border-blue-500 text-blue-400 px-6 py-3 rounded-full hover:bg-blue-500 hover:text-white transition duration-300 text-sm font-medium transform hover:scale-105 flex items-center gap-2">
+                                <a href="CV-video.html" className="bg-transparent border-2 border-[var(--accent-blue)] text-[var(--accent-blue)] px-6 py-3 rounded-full hover:bg-[var(--accent-blue)] hover:text-[var(--text-primary)] transition duration-300 text-sm font-medium transform hover:scale-105 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                                     </svg>
                                     CV Vidéo
                                 </a>
-                                <a href="lettre-de-motivation.html" className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full hover:bg-white hover:text-gray-900 transition duration-300 text-sm font-medium transform hover:scale-105 flex items-center gap-2">
+                                <a href="lettre-de-motivation.html" className="bg-transparent border-2 border-[var(--text-primary)] text-[var(--text-primary)] px-6 py-3 rounded-full hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition duration-300 text-sm font-medium transform hover:scale-105 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clipRule="evenodd" />
                                     </svg>
@@ -404,21 +500,21 @@
                                 </a>
                             </div>
                             <div className="hero-social mt-8 flex justify-center lg:justify-start gap-6">
-                                <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" className="text-2xl text-gray-300 hover:text-blue-400 transition transform hover:scale-110 hover:-translate-y-1">
+                                <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" className="text-2xl text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition transform hover:scale-110 hover:-translate-y-1">
                                     <i className="fab fa-linkedin"></i>
                                 </a>
-                                <a href="https://github.com/omarkortas" className="text-2xl text-gray-300 hover:text-blue-400 transition transform hover:scale-110 hover:-translate-y-1">
+                                <a href="https://github.com/omarkortas" className="text-2xl text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition transform hover:scale-110 hover:-translate-y-1">
                                     <i className="fab fa-github"></i>
                                 </a>
                             </div>
                         </div>
                         <div className="hero-image flex-1 max-w-md relative">
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur opacity-30 animate-pulse"></div>
+                            <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-purple)] rounded-full blur opacity-30 animate-pulse"></div>
                             <img src="omar-removebg-preview.png" alt="Omar" className="w-full relative z-20 animate-float" onError={() => console.error("Image omar-removebg-preview.png failed to load")} />
                         </div>
                     </div>
                     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-                        <a href="#a-propos" className="text-gray-400 hover:text-blue-400 transition">
+                        <a href="#a-propos" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                             </svg>
@@ -435,7 +531,7 @@
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <FadeIn direction="right">
                             <div className="relative group">
-                                <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                                <div className="absolute -inset-4 bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-purple)] rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                                 <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                                     <img 
                                         src="omar-removebg-preview.png" 
@@ -443,35 +539,35 @@
                                         className="w-full max-w-md mx-auto transform group-hover:scale-105 transition-transform duration-700 ease-out object-cover"
                                         onError={() => console.error("Image om.jpg failed to load")} 
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 </div>
                             </div>
                         </FadeIn>
                         <FadeIn direction="left" delay={0.2}>
                             <div className="text-center md:text-left">
-                                <h3 className="text-2xl sm:text-3xl font-semibold mb-4 text-blue-400">Je suis Omar El Farouk</h3>
-                                <p className="text-justify text-base sm:text-lg text-gray-300 leading-relaxed mb-6">
+                                <h3 className="text-2xl sm:text-3xl font-semibold mb-4 text-[var(--accent-blue)]">Je suis Omar El Farouk</h3>
+                                <p className="text-justify text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mb-6">
                                     Passionné par les systèmes informatiques et la technologie, je suis diplomé en ingénierie systeme informatique toujours prêt à relever de nouveaux défis. Depuis le début de mon parcours académique, j'ai cultivé une grande curiosité pour les domaines liés aux systèmes, aux réseaux, et au développement d'applications.
                                 </p>
-                                <p className="text-justify text-base sm:text-lg text-gray-300 leading-relaxed mb-8">
+                                <p className="text-justify text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed mb-8">
                                     Ma vision est de créer des solutions technologiques innovantes qui répondent aux besoins du monde moderne tout en étant accessibles et intuitives pour les utilisateurs.
                                 </p>
                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div className="flex items-center space-x-2">
-                                        <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
-                                        <span className="text-gray-300">Développement Web</span>
+                                        <div className="h-2 w-2 bg-[var(--accent-blue)] rounded-full"></div>
+                                        <span className="text-[var(--text-secondary)]">Développement Web</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
-                                        <span className="text-gray-300">Systèmes & Réseaux</span>
+                                        <div className="h-2 w-2 bg-[var(--accent-blue)] rounded-full"></div>
+                                        <span className="text-[var(--text-secondary)]">Systèmes & Réseaux</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
-                                        <span className="text-gray-300">Intelligence Artificielle</span>
+                                        <div className="h-2 w-2 bg-[var(--accent-blue)] rounded-full"></div>
+                                        <span className="text-[var(--text-secondary)]">Intelligence Artificielle</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
-                                        <span className="text-gray-300">Sécurité Informatique</span>
+                                        <div className="h-2 w-2 bg-[var(--accent-blue)] rounded-full"></div>
+                                        <span className="text-[var(--text-secondary)]">Sécurité Informatique</span>
                                     </div>
                                 </div>
                             </div>
@@ -517,13 +613,13 @@
                                         <div className="flex justify-between items-center mb-2">
                                             <div className="flex items-center">
                                                 <i className={`${skill.icon} text-${skill.color}-500 mr-3`}></i>
-                                                <span className="text-gray-200 font-medium">{skill.name}</span>
+                                                <span className="text-[var(--text-secondary)] font-medium">{skill.name}</span>
                                             </div>
-                                            <span className="text-blue-400 font-semibold">{skill.progress}%</span>
+                                            <span className="text-[var(--accent-blue)] font-semibold">{skill.progress}%</span>
                                         </div>
                                         <div className="w-full bg-gray-700 rounded-full h-2.5 overflow-hidden">
                                             <div 
-                                                className="progress-bar bg-gradient-to-r from-blue-400 to-blue-600 h-2.5 rounded-full" 
+                                                className="progress-bar bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-blue)] h-2.5 rounded-full" 
                                                 style={{ width: "0%" }}
                                                 ref={el => {
                                                     if (!el) return;
@@ -550,11 +646,11 @@
                         <FadeIn delay={0.3}>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {techCategories.map((category) => (
-                                    <div key={category.title} className="bg-gray-800 bg-opacity-50 backdrop-blur-lg p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300 transform hover:-translate-y-2 hover:shadow-lg">
-                                        <h3 className="text-xl font-semibold mb-4 text-blue-400">{category.title}</h3>
+                                    <div key={category.title} className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300 transform hover:-translate-y-2 hover:shadow-lg">
+                                        <h3 className="text-xl font-semibold mb-4 text-[var(--accent-blue)]">{category.title}</h3>
                                         <div className="flex flex-wrap gap-2">
                                             {category.techs.map((tech) => (
-                                                <span key={tech} className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">
+                                                <span key={tech} className="px-3 py-1 bg-gray-700 text-[var(--text-secondary)] rounded-full text-xs">
                                                     {tech}
                                                 </span>
                                             ))}
@@ -621,7 +717,6 @@
                     techs: ["Google Cloud", "Terraform", "Docker", "CI/CD"],
                     details: "Mise en place d’une architecture cloud sur Google Cloud Platform (GCP) avec déploiement automatisé via Terraform, conteneurisation avec Docker, pipelines CI/CD, gestion des identités et surveillance des ressources pour garantir performance et sécurité."
                 },
-
             ];
 
             const openModal = (item) => {
@@ -637,11 +732,11 @@
                     <div className="space-y-16">
                         {/* Projects Subsection */}
                         <div>
-                            <h3 className="text-2xl font-semibold text-blue-400 mb-8">Projets</h3>
+                            <h3 className="text-2xl font-semibold text-[var(--accent-blue)] mb-8">Projets</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {items.filter(item => item.type === "project").map((project, index) => (
                                     <FadeIn key={project.title} delay={index * 0.1} className="h-full">
-                                        <div className="project-card bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-2xl overflow-hidden border border-blue-600/50 h-full group relative">
+                                        <div className="project-card bg-[var(--card-bg)] backdrop-blur-lg rounded-2xl overflow-hidden border border-[var(--border-color)] h-full group relative">
                                             <div className="relative overflow-hidden h-64">
                                                 <img 
                                                     src={project.img} 
@@ -649,19 +744,19 @@
                                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                                                     onError={() => console.error(`Image ${project.img} failed to load`)}
                                                 />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                                                <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                                                <div className="absolute top-4 right-4 bg-[var(--accent-blue)] text-[var(--text-primary)] px-3 py-1 rounded-full text-xs font-medium">
                                                     Projet
                                                 </div>
                                             </div>
                                             <div className="p-6">
-                                                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors">{project.title}</h3>
-                                                <p className="text-gray-300 text-sm mb-4 line-clamp-3">{project.desc}</p>
+                                                <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-blue)] transition-colors">{project.title}</h3>
+                                                <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">{project.desc}</p>
                                                 <div className="flex flex-wrap gap-2 mb-4">
                                                     {project.techs.map((tech, i) => (
                                                         <span 
                                                             key={tech} 
-                                                            className="px-2 py-1 bg-gray-700 text-blue-400 rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
+                                                            className="px-2 py-1 bg-gray-700 text-[var(--accent-blue)] rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
                                                             style={{ transitionDelay: `${i * 50}ms` }}
                                                         >
                                                             {tech}
@@ -670,7 +765,7 @@
                                                 </div>
                                                 <button 
                                                     onClick={() => openModal(project)}
-                                                    className="inline-flex items-center text-blue-400 hover:text-blue-300 text-sm font-medium group"
+                                                    className="inline-flex items-center text-[var(--accent-blue)] hover:text-blue-300 text-sm font-medium group"
                                                 >
                                                     Voir les détails
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
@@ -686,11 +781,11 @@
 
                         {/* Certifications Subsection */}
                         <div>
-                            <h3 className="text-2xl font-semibold text-purple-400 mb-8">Certifications</h3>
+                            <h3 className="text-2xl font-semibold text-[var(--accent-purple)] mb-8">Certifications</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {items.filter(item => item.type === "certification").map((cert, index) => (
                                     <FadeIn key={cert.title} delay={index * 0.1} className="h-full">
-                                        <div className="certification-card bg-gray-800 bg-opacity-50 backdrop-blur-lg rounded-2xl overflow-hidden border border-purple-600/50 h-full group relative">
+                                        <div className="certification-card bg-[var(--card-bg)] backdrop-blur-lg rounded-2xl overflow-hidden border border-[var(--border-color)] h-full group relative">
                                             <div className="relative overflow-hidden h-64">
                                                 <img 
                                                     src={cert.img} 
@@ -698,19 +793,19 @@
                                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                                                     onError={() => console.error(`Image ${cert.img} failed to load`)}
                                                 />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                                                <div className="absolute top-4 right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                                                <div className="absolute top-4 right-4 bg-[var(--accent-purple)] text-[var(--text-primary)] px-3 py-1 rounded-full text-xs font-medium">
                                                     Certification
                                                 </div>
                                             </div>
                                             <div className="p-6">
-                                                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors">{cert.title}</h3>
-                                                <p className="text-gray-300 text-sm mb-4 line-clamp-3">{cert.desc}</p>
+                                                <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-purple)] transition-colors">{cert.title}</h3>
+                                                <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">{cert.desc}</p>
                                                 <div className="flex flex-wrap gap-2 mb-4">
                                                     {cert.techs.map((tech, i) => (
                                                         <span 
                                                             key={tech} 
-                                                            className="px-2 py-1 bg-gray-700 text-purple-400 rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
+                                                            className="px-2 py-1 bg-gray-700 text-[var(--accent-purple)] rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
                                                             style={{ transitionDelay: `${i * 50}ms` }}
                                                         >
                                                             {tech}
@@ -719,7 +814,7 @@
                                                 </div>
                                                 <button 
                                                     onClick={() => openModal(cert)}
-                                                    className="inline-flex items-center text-purple-400 hover:text-purple-300 text-sm font-medium group"
+                                                    className="inline-flex items-center text-[var(--accent-purple)] hover:text-purple-300 text-sm font-medium group"
                                                 >
                                                     Voir les détails
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
@@ -736,39 +831,39 @@
 
                     {selectedProject && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                            <div className="bg-gray-800 bg-opacity-80 backdrop-blur-lg rounded-2xl max-w-2xl w-full p-8 relative modal modal-enter border border-gray-700/50 shadow-2xl">
+                            <div className="bg-[var(--card-bg)] backdrop-blur-lg rounded-2xl max-w-2xl w-full p-8 relative modal modal-enter border border-[var(--border-color)] shadow-2xl">
                                 <button 
                                     onClick={closeModal}
-                                    className="absolute top-4 right-4 text-gray-300 hover:text-blue-400 transition-transform hover:scale-110"
+                                    className="absolute top-4 right-4 text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition-transform hover:scale-110"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                                 <div className="flex items-center gap-4 mb-6">
-                                    <h3 className="text-2xl font-semibold text-white">{selectedProject.title}</h3>
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${selectedProject.type === "project" ? "bg-blue-600" : "bg-purple-600"} text-white`}>
+                                    <h3 className="text-2xl font-semibold text-[var(--text-primary)]">{selectedProject.title}</h3>
+                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${selectedProject.type === "project" ? "bg-[var(--accent-blue)]" : "bg-[var(--accent-purple)]"} text-[var(--text-primary)]`}>
                                         {selectedProject.type === "project" ? "Projet" : "Certification"}
                                     </span>
                                 </div>
                                 <img 
                                     src={selectedProject.img} 
                                     alt={selectedProject.title} 
-                                    className="w-full h-60 object-cover rounded-lg mb-6 border border-gray-600/50"
+                                    className="w-full h-60 object-cover rounded-lg mb-6 border border-[var(--border-color)]"
                                     onError={() => console.error(`Image ${selectedProject.img} failed to load`)}
                                 />
-                                <p className="text-gray-200 text-base mb-4">{selectedProject.desc}</p>
-                                <p className="text-gray-300 text-sm mb-6">{selectedProject.details}</p>
+                                <p className="text-[var(--text-primary)] text-base mb-4">{selectedProject.desc}</p>
+                                <p className="text-[var(--text-secondary)] text-sm mb-6">{selectedProject.details}</p>
                                 <div className="flex flex-wrap gap-2 mb-6">
                                     {selectedProject.techs.map(tech => (
-                                        <span key={tech} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedProject.type === "project" ? "bg-blue-600/50 text-blue-300" : "bg-purple-600/50 text-purple-300"}`}>
+                                        <span key={tech} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedProject.type === "project" ? "bg-[var(--accent-blue)]/50 text-[var(--accent-blue)]" : "bg-[var(--accent-purple)]/50 text-[var(--accent-purple)]"}`}>
                                             {tech}
                                         </span>
                                     ))}
                                 </div>
                                 <button 
                                     onClick={closeModal}
-                                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-3 rounded-lg transition duration-300 transform hover:scale-105"
+                                    className="w-full bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-purple)] hover:from-blue-600 hover:to-purple-600 text-[var(--text-primary)] px-6 py-3 rounded-lg transition duration-300 transform hover:scale-105"
                                 >
                                     Fermer
                                 </button>
@@ -780,230 +875,228 @@
         };
 
         // Section Expériences modernisée
-const Experiences = () => {
-    const [selectedExperience, setSelectedExperience] = useState(null);
-    const [attestationImage, setAttestationImage] = useState(null);
+        const Experiences = () => {
+            const [selectedExperience, setSelectedExperience] = useState(null);
+            const [attestationImage, setAttestationImage] = useState(null);
 
-    const experiences = [
-  {
-    company: "Groupe Allemand Dieter Braun",
-    role: "Stage d'été",
-    duration: "08/2024 – 09/2024",
-    location: "Messadine, Sousse",
-    responsibilities: [
-      "Gestion et mise en fonctionnement des serveurs dans un environnement d'entreprise.",
-      "Initiation à la vie professionnelle : travail en équipe et développement des compétences professionnelles."
-    ],
-    attestation: "ATTESTATION1.png",
-    color: "from-indigo-900 to-purple-800",
-    icon: "🖥️",
-    tech: ["Server Management", "Enterprise IT", "Team Collaboration"]
-  },
-  {
-    company: "ZOOMY Business & Technologie IT",
-    role: "Stage de fin d'études",
-    duration: "02/2025 - 05/2025",
-    location: "Akouda, Sousse",
-    responsibilities: [
-      "Conception et développement d'une plateforme de livraison intelligente.",
-      "Mise en place de fonctionnalités permettant aux clients et fournisseurs de soumettre des commandes, et aux livreurs ou sociétés de livraison de les prendre en charge."
-    ],
-    attestation: "ATTESTATION.png",
-    color: "from-sky-900 to-cyan-800",
-    icon: "🚀",
-    tech: ["Platform Development", "Full Stack", "Smart Delivery", "API Design"]
-  },
-  {
-    company: "Société de câbles automobiles",
-    role: "Technicien de service planche (Stage)",
-    duration: "07/2025",
-    location: "zone industrielle kalaa kebira, Sousse ",
-    responsibilities: [
-      "Participation à la saisie de figurines et à des tâches techniques.",
-      "Acquisition d'expérience pratique dans un environnement industriel."
-    ],
-    attestation: "cable_attestation.png",
-    color: "from-emerald-900 to-green-800",
-    icon: "⚡",
-    tech: ["Industrial Tech", "Manufacturing", "Quality Control"]
-  }
-]
-;
+            const experiences = [
+                {
+                    company: "Groupe Allemand Dieter Braun",
+                    role: "Stage d'été",
+                    duration: "08/2024 – 09/2024",
+                    location: "Messadine, Sousse",
+                    responsibilities: [
+                        "Gestion et mise en fonctionnement des serveurs dans un environnement d'entreprise.",
+                        "Initiation à la vie professionnelle : travail en équipe et développement des compétences professionnelles."
+                    ],
+                    attestation: "ATTESTATION1.png",
+                    color: "from-indigo-900 to-purple-800",
+                    icon: "🖥️",
+                    tech: ["Server Management", "Enterprise IT", "Team Collaboration"]
+                },
+                {
+                    company: "ZOOMY Business & Technologie IT",
+                    role: "Stage de fin d'études",
+                    duration: "02/2025 - 05/2025",
+                    location: "Akouda, Sousse",
+                    responsibilities: [
+                        "Conception et développement d'une plateforme de livraison intelligente.",
+                        "Mise en place de fonctionnalités permettant aux clients et fournisseurs de soumettre des commandes, et aux livreurs ou sociétés de livraison de les prendre en charge."
+                    ],
+                    attestation: "ATTESTATION.png",
+                    color: "from-sky-900 to-cyan-800",
+                    icon: "🚀",
+                    tech: ["Platform Development", "Full Stack", "Smart Delivery", "API Design"]
+                },
+                {
+                    company: "Société de câbles automobiles",
+                    role: "Technicien de service planche (Stage)",
+                    duration: "07/2025",
+                    location: "zone industrielle kalaa kebira, Sousse ",
+                    responsibilities: [
+                        "Participation à la saisie de figurines et à des tâches techniques.",
+                        "Acquisition d'expérience pratique dans un environnement industriel."
+                    ],
+                    attestation: "cable_attestation.png",
+                    color: "from-emerald-900 to-green-800",
+                    icon: "⚡",
+                    tech: ["Industrial Tech", "Manufacturing", "Quality Control"]
+                }
+            ];
 
-    const openModal = (experience) => {
-        setSelectedExperience(experience);
-        setAttestationImage(experience.attestation);
-    };
+            const openModal = (experience) => {
+                setSelectedExperience(experience);
+                setAttestationImage(experience.attestation);
+            };
 
-    const closeModal = () => {
-        setSelectedExperience(null);
-        setAttestationImage(null);
-    };
+            const closeModal = () => {
+                setSelectedExperience(null);
+                setAttestationImage(null);
+            };
 
-    return (
-        <Section id="expériences" title="Expériences" dark={false}>
-            <style jsx>{`
-                @keyframes float {
-                    0%, 100% { transform: translateY(0px); }
-                    50% { transform: translateY(-10px); }
-                }
-                @keyframes glow {
-                    from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-                    to { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.3); }
-                }
-                .float-animation {
-                    animation: float 6s ease-in-out infinite;
-                }
-                .glow-hover:hover {
-                    animation: glow 2s ease-in-out infinite alternate;
-                }
-                .glass-experience {
-                    background: rgba(255, 255, 255, 0.1);
-                    backdrop-filter: blur(20px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-                }
-                .tech-badge {
-                    background: rgba(255, 255, 255, 0.15);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                }
-            `}</style>
+            return (
+                <Section id="expériences" title="Expériences" dark={false}>
+                    <style jsx>{`
+                        @keyframes float {
+                            0%, 100% { transform: translateY(0px); }
+                            50% { transform: translateY(-10px); }
+                        }
+                        @keyframes glow {
+                            from { box-shadow: 0 0 20px var(--border-color); }
+                            to { box-shadow: 0 0 30px var(--border-color), 0 0 40px var(--border-color); }
+                        }
+                        .float-animation {
+                            animation: float 6s ease-in-out infinite;
+                        }
+                        .glow-hover:hover {
+                            animation: glow 2s ease-in-out infinite alternate;
+                        }
+                        .glass-experience {
+                            background: var(--card-bg);
+                            backdrop-filter: blur(20px);
+                            border: 1px solid var(--border-color);
+                            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                        }
+                        .tech-badge {
+                            background: rgba(255, 255, 255, 0.15);
+                            backdrop-filter: blur(10px);
+                            border: 1px solid var(--border-color);
+                        }
+                    `}</style>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                {experiences.map((exp, index) => (
-                    <FadeIn key={exp.company} delay={index * 0.2} className="h-full">
-                        <div className="group relative h-full">
-                            <div className={`absolute inset-0 bg-gradient-to-br ${exp.color} rounded-2xl opacity-90 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-105 glow-hover`}></div>
-                            <div className="relative glass-experience rounded-2xl p-8 h-full transform transition-all duration-500 group-hover:-translate-y-2 float-animation">
-                                <div className="flex items-start justify-between mb-6">
-                                    <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                                        {exp.icon}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {experiences.map((exp, index) => (
+                            <FadeIn key={exp.company} delay={index * 0.2} className="h-full">
+                                <div className="group relative h-full">
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${exp.color} rounded-2xl opacity-90 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-105 glow-hover`}></div>
+                                    <div className="relative glass-experience rounded-2xl p-8 h-full transform transition-all duration-500 group-hover:-translate-y-2 float-animation">
+                                        <div className="flex items-start justify-between mb-6">
+                                            <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                                                {exp.icon}
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-xs text-[var(--text-secondary)] bg-[var(--card-bg)] px-3 py-1 rounded-full backdrop-blur-sm">
+                                                    {exp.duration}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mb-6">
+                                            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2 group-hover:text-yellow-200 transition-colors">
+                                                {exp.company}
+                                            </h3>
+                                            <p className="text-[var(--text-primary)] font-medium text-lg mb-2">{exp.role}</p>
+                                            <p className="text-[var(--text-secondary)] text-sm flex items-center">
+                                                <i className="fas fa-map-marker-alt mr-2"></i>
+                                                {exp.location}
+                                            </p>
+                                        </div>
+                                        <div className="mb-6">
+                                            <div className="flex flex-wrap gap-2">
+                                                {exp.tech.map((tech, i) => (
+                                                    <span key={i} className="tech-badge text-[var(--text-primary)] text-xs px-3 py-1 rounded-full">
+                                                        {tech}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="mb-8 flex-grow">
+                                            <ul className="text-[var(--text-secondary)] text-sm space-y-2">
+                                                {exp.responsibilities.map((resp, i) => (
+                                                    <li key={i} className="flex items-start">
+                                                        <span className="text-yellow-300 mr-2 mt-1">▶</span>
+                                                        <span className="flex-1">{resp}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <button 
+                                            onClick={() => openModal(exp)}
+                                            className="w-full bg-[var(--card-bg)] hover:bg-[var(--card-bg)]/80 backdrop-blur-sm text-[var(--text-primary)] font-medium py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center group-hover:bg-[var(--card-bg)]/75 transform hover:scale-105"
+                                        >
+                                            <i className="fas fa-certificate mr-2"></i>
+                                            Voir l'attestation
+                                            <i className="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                        </button>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="text-xs text-white/70 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                                            {exp.duration}
+                                </div>
+                            </FadeIn>
+                        ))}
+                    </div>
+
+                    {selectedExperience && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 modal">
+                            <div className="bg-[var(--card-bg)] backdrop-blur-xl rounded-3xl max-w-md w-full p-5 relative border border-[var(--border-color)] shadow-2xl text-[15px]">
+                                <button 
+                                    onClick={closeModal}
+                                    className="absolute top-5 right-5 text-[var(--text-secondary)] hover:text-[var(--accent-blue)] bg-[var(--card-bg)] hover:bg-[var(--card-bg)]/80 rounded-full p-2 transition-all duration-300 backdrop-blur-sm text-sm"
+                                >
+                                    <i className="fas fa-times text-lg"></i>
+                                </button>
+                                <div className="mb-6">
+                                    <div className="flex items-center mb-4">
+                                        <span className="text-3xl mr-4">{selectedExperience.icon}</span>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-1">{selectedExperience.company}</h3>
+                                            <p className="text-[var(--accent-blue)] font-medium text-sm">{selectedExperience.role}</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="mb-6">
-                                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-yellow-200 transition-colors">
-                                        {exp.company}
-                                    </h3>
-                                    <p className="text-white/90 font-medium text-lg mb-2">{exp.role}</p>
-                                    <p className="text-white/70 text-sm flex items-center">
+                                    <div className="flex items-center text-[var(--text-secondary)] text-sm mb-5">
+                                        <i className="fas fa-calendar-alt mr-2"></i>
+                                        {selectedExperience.duration}
+                                        <span className="mx-2">•</span>
                                         <i className="fas fa-map-marker-alt mr-2"></i>
-                                        {exp.location}
-                                    </p>
-                                </div>
-                                <div className="mb-6">
-                                    <div className="flex flex-wrap gap-2">
-                                        {exp.tech.map((tech, i) => (
-                                            <span key={i} className="tech-badge text-white text-xs px-3 py-1 rounded-full">
-                                                {tech}
-                                            </span>
-                                        ))}
+                                        {selectedExperience.location}
+                                    </div>
+                                    <div className="mb-5">
+                                        <h4 className="text-[var(--text-primary)] font-semibold mb-2 flex items-center">
+                                            <i className="fas fa-tasks mr-2"></i>
+                                            Responsabilités
+                                        </h4>
+                                        <ul className="text-[var(--text-secondary)] space-y-1.5">
+                                            {selectedExperience.responsibilities.map((resp, i) => (
+                                                <li key={i} className="flex items-start text-sm">
+                                                    <span className="text-green-400 mr-2 mt-1">✓</span>
+                                                    <span>{resp}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
-                                <div className="mb-8 flex-grow">
-                                    <ul className="text-white/80 text-sm space-y-2">
-                                        {exp.responsibilities.map((resp, i) => (
-                                            <li key={i} className="flex items-start">
-                                                <span className="text-yellow-300 mr-2 mt-1">▶</span>
-                                                <span className="flex-1">{resp}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                <div className="mb-6">
+                                    <h4 className="text-[var(--text-primary)] font-semibold mb-2 flex items-center">
+                                        <i className="fas fa-certificate mr-2"></i>
+                                        Attestation
+                                    </h4>
+                                    <div className="bg-[var(--card-bg)] rounded-2xl p-3 border border-[var(--border-color)]">
+                                        {attestationImage ? (
+                                            <img 
+                                                src={attestationImage} 
+                                                alt={`${selectedExperience.company} attestation`} 
+                                                className="w-full h-52 object-contain rounded-xl"
+                                                onError={() => console.error(`Image ${attestationImage} failed to load`)}
+                                            />
+                                        ) : (
+                                            <div className="flex items-center justify-center h-52 text-[var(--text-secondary)] text-sm">
+                                                <div className="text-center">
+                                                    <i className="fas fa-file-alt text-5xl mb-3"></i>
+                                                    <p>Aucune attestation disponible.</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <button 
-                                    onClick={() => openModal(exp)}
-                                    className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center group-hover:bg-white/25 transform hover:scale-105"
+                                    onClick={closeModal}
+                                    className="w-full bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-purple)] hover:from-blue-600 hover:to-purple-600 text-[var(--text-primary)] font-semibold py-3 px-5 rounded-2xl transition-all duration-300 transform hover:scale-105 text-sm shadow-lg"
                                 >
-                                    <i className="fas fa-certificate mr-2"></i>
-                                    Voir l'attestation
-                                    <i className="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                    Fermer
                                 </button>
                             </div>
                         </div>
-                    </FadeIn>
-                ))}
-            </div>
-
-           {selectedExperience && (
-  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 modal">
-    <div className="bg-white/10 backdrop-blur-xl rounded-3xl max-w-md w-full p-5 relative border border-white/20 shadow-2xl text-[15px]">
-      <button 
-        onClick={closeModal}
-        className="absolute top-5 right-5 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-all duration-300 backdrop-blur-sm text-sm"
-      >
-        <i className="fas fa-times text-lg"></i>
-      </button>
-      <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <span className="text-3xl mr-4">{selectedExperience.icon}</span>
-          <div>
-            <h3 className="text-xl font-bold text-white mb-1">{selectedExperience.company}</h3>
-            <p className="text-blue-300 font-medium text-sm">{selectedExperience.role}</p>
-          </div>
-        </div>
-        <div className="flex items-center text-white/70 text-sm mb-5">
-          <i className="fas fa-calendar-alt mr-2"></i>
-          {selectedExperience.duration}
-          <span className="mx-2">•</span>
-          <i className="fas fa-map-marker-alt mr-2"></i>
-          {selectedExperience.location}
-        </div>
-        <div className="mb-5">
-          <h4 className="text-white font-semibold mb-2 flex items-center">
-            <i className="fas fa-tasks mr-2"></i>
-            Responsabilités
-          </h4>
-          <ul className="text-white/80 space-y-1.5">
-            {selectedExperience.responsibilities.map((resp, i) => (
-              <li key={i} className="flex items-start text-sm">
-                <span className="text-green-400 mr-2 mt-1">✓</span>
-                <span>{resp}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="mb-6">
-        <h4 className="text-white font-semibold mb-2 flex items-center">
-          <i className="fas fa-certificate mr-2"></i>
-          Attestation
-        </h4>
-        <div className="bg-white/5 rounded-2xl p-3 border border-white/10">
-          {attestationImage ? (
-            <img 
-              src={attestationImage} 
-              alt={`${selectedExperience.company} attestation`} 
-              className="w-full h-52 object-contain rounded-xl"
-              onError={() => console.error(`Image ${attestationImage} failed to load`)}
-            />
-          ) : (
-            <div className="flex items-center justify-center h-52 text-white/40 text-sm">
-              <div className="text-center">
-                <i className="fas fa-file-alt text-5xl mb-3"></i>
-                <p>Aucune attestation disponible.</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      <button 
-        onClick={closeModal}
-        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-5 rounded-2xl transition-all duration-300 transform hover:scale-105 text-sm shadow-lg"
-      >
-        Fermer
-      </button>
-    </div>
-  </div>
-)}
-
-        </Section>
-    );
-};
+                    )}
+                </Section>
+            );
+        };
 
         // Composant pour les statistiques
         const Stats = () => {
@@ -1043,7 +1136,7 @@ const Experiences = () => {
                         {stats.map((stat, index) => (
                             <FadeIn key={stat.label} delay={index * 0.2}>
                                 <div
-                                    className={`bg-gray-900 bg-opacity-60 backdrop-blur-xl p-8 rounded-2xl border border-gray-700 hover:border-${stat.accent} transition-all duration-500 transform hover:-translate-y-3 hover:shadow-xl hover:shadow-${stat.accent}/20 text-center cursor-pointer`}
+                                    className={`bg-[var(--card-bg)] backdrop-blur-xl p-8 rounded-2xl border border-[var(--border-color)] hover:border-${stat.accent} transition-all duration-500 transform hover:-translate-y-3 hover:shadow-xl hover:shadow-${stat.accent}/20 text-center cursor-pointer`}
                                     role="region"
                                     aria-label={`Statistique: ${stat.label}`}
                                 >
@@ -1051,10 +1144,10 @@ const Experiences = () => {
                                         className={`${stat.icon} text-${stat.accent} text-4xl mb-6 transition-transform duration-300 hover:scale-110`}
                                         aria-label={`Icône pour ${stat.label}`}
                                     ></i>
-                                    <h3 className="text-4xl font-extrabold text-white mb-3">
+                                    <h3 className="text-4xl font-extrabold text-[var(--text-primary)] mb-3">
                                         {Math.round(counts[index])}
                                     </h3>
-                                    <p className="text-gray-100 text-base font-semibold">{stat.label}</p>
+                                    <p className="text-[var(--text-primary)] text-base font-semibold">{stat.label}</p>
                                 </div>
                             </FadeIn>
                         ))}
@@ -1141,47 +1234,47 @@ const Experiences = () => {
                     <div className="grid md:grid-cols-2 gap-12">
                         <FadeIn direction="left">
                             <div className="space-y-6">
-                                <h3 className="text-2xl font-semibold text-blue-400">Prenons contact</h3>
-                                <p className="text-gray-300">
+                                <h3 className="text-2xl font-semibold text-[var(--accent-blue)]">Prenons contact</h3>
+                                <p className="text-[var(--text-secondary)]">
                                     Vous avez un projet ou une question ? N'hésitez pas à me contacter, je vous répondrai dès que possible.
                                 </p>
                                 
                                 <div className="space-y-4 mt-6">
                                     <div className="flex items-start gap-4">
-                                        <div className="mt-1 text-blue-400">
+                                        <div className="mt-1 text-[var(--accent-blue)]">
                                             <i className="fas fa-envelope text-lg"></i>
                                         </div>
                                         <div>
-                                            <h4 className="text-gray-200 font-medium">Email</h4>
-                                            <a href="mailto:omaromarkortas@gmail.com" className="text-gray-400 hover:text-blue-400 transition">
+                                            <h4 className="text-[var(--text-primary)] font-medium">Email</h4>
+                                            <a href="mailto:omaromarkortas@gmail.com" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
                                                 omaromarkortas@gmail.com
                                             </a>
                                         </div>
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="mt-1 text-blue-400">
+                                        <div className="mt-1 text-[var(--accent-blue)]">
                                             <i className="fas fa-phone text-lg"></i>
                                         </div>
                                         <div>
-                                            <h4 className="text-gray-200 font-medium">Téléphone</h4>
-                                            <a href="tel:+21699749793" className="text-gray-400 hover:text-blue-400 transition">
+                                            <h4 className="text-[var(--text-primary)] font-medium">Téléphone</h4>
+                                            <a href="tel:+21699749793" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
                                                 +216 99 749 793
                                             </a>
                                         </div>
                                     </div>
                                     
                                     <div className="flex items-start gap-4">
-                                        <div className="mt-1 text-blue-400">
+                                        <div className="mt-1 text-[var(--accent-blue)]">
                                             <i className="fab fa-linkedin text-lg"></i>
                                         </div>
                                         <div>
-                                            <h4 className="text-gray-200 font-medium">LinkedIn</h4>
+                                            <h4 className="text-[var(--text-primary)] font-medium">LinkedIn</h4>
                                             <a 
                                                 href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
-                                                className="text-gray-400 hover:text-blue-400 transition"
+                                                className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition"
                                             >
                                                 Omar El Farouk Kortas
                                             </a>
@@ -1192,10 +1285,10 @@ const Experiences = () => {
                         </FadeIn>
 
                         <FadeIn direction="right" delay={0.2}>
-                            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-lg p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300">
+                            <div className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300">
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     <div>
-                                        <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                                             Nom complet <span className="text-red-500">*</span>
                                         </label>
                                         <input
@@ -1206,13 +1299,13 @@ const Experiences = () => {
                                             onChange={handleChange}
                                             required
                                             disabled={isSubmitting}
-                                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                            className="w-full px-4 py-3 bg-gray-700 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
                                             placeholder="Votre nom"
                                         />
                                     </div>
                                     
                                     <div>
-                                        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                                             Email <span className="text-red-500">*</span>
                                         </label>
                                         <input
@@ -1223,13 +1316,13 @@ const Experiences = () => {
                                             onChange={handleChange}
                                             required
                                             disabled={isSubmitting}
-                                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                            className="w-full px-4 py-3 bg-gray-700 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
                                             placeholder="votre@email.com"
                                         />
                                     </div>
                                     
                                     <div>
-                                        <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                                             Message <span className="text-red-500">*</span>
                                         </label>
                                         <textarea
@@ -1240,7 +1333,7 @@ const Experiences = () => {
                                             onChange={handleChange}
                                             required
                                             disabled={isSubmitting}
-                                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                            className="w-full px-4 py-3 bg-gray-700 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
                                             placeholder="Dites-moi en quoi puis-je vous aider..."
                                         ></textarea>
                                     </div>
@@ -1251,13 +1344,13 @@ const Experiences = () => {
                                             disabled={isSubmitting}
                                             className={`w-full flex justify-center items-center px-6 py-3 rounded-lg font-medium transition duration-300 ${
                                                 isSubmitting
-                                                    ? 'bg-blue-700 cursor-not-allowed'
-                                                    : 'bg-blue-600 hover:bg-blue-700 transform hover:scale-[1.02]'
+                                                    ? 'bg-[var(--accent-blue)]/70 cursor-not-allowed'
+                                                    : 'bg-[var(--accent-blue)] hover:bg-blue-700 transform hover:scale-[1.02]'
                                             }`}
                                         >
                                             {isSubmitting ? (
                                                 <>
-                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-[var(--text-primary)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                     </svg>
@@ -1298,16 +1391,16 @@ const Experiences = () => {
         // Footer amélioré
         const Footer = () => {
             return (
-                <footer className="bg-gray-900/50 py-8">
+                <footer className="bg-[var(--card-bg)] py-8">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                         <AnimatedText delay={0.2}>
-                            <p className="text-gray-300 mb-4">© 2025 Omar El Farouk. Tous droits réservés.</p>
+                            <p className="text-[var(--text-secondary)] mb-4">© 2025 Omar El Farouk. Tous droits réservés.</p>
                         </AnimatedText>
                         <div className="flex justify-center gap-6">
-                            <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" className="text-gray-300 hover:text-blue-400 transition transform hover:scale-110">
+                            <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition transform hover:scale-110">
                                 <i className="fab fa-linkedin text-xl"></i>
                             </a>
-                            <a href="https://github.com/omarkortas" className="text-gray-300 hover:text-blue-400 transition transform hover:scale-110">
+                            <a href="https://github.com/omarkortas" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition transform hover:scale-110">
                                 <i className="fab fa-github text-xl"></i>
                             </a>
                         </div>
@@ -1318,11 +1411,13 @@ const Experiences = () => {
 
         // Composant principal
         const App = () => {
+            const [theme, setTheme] = useState('dark');
+
             useEffect(() => {
                 try {
                     Particles.init({
                         selector: '#particles-background',
-                        color: ['#60A5FA', '#A855F7', '#FFFFFF'],
+                        color: theme === 'dark' ? ['#60A5FA', '#A855F7', '#FFFFFF'] : ['#3B82F6', '#7C3AED', '#000000'],
                         connectParticles: true,
                         maxParticles: 100,
                         speed: 0.6,
@@ -1344,19 +1439,37 @@ const Experiences = () => {
                                 }
                             }
                         ],
-                        particleOpacity: 0.5,
-                        particleShape: 'circle',
-                        lineOpacity: 0.3
+                        particleOpacity:
+            0.7
                     });
-                    gsap.registerPlugin(ScrollTrigger);
                 } catch (error) {
-                    console.error("Erreur lors de l'initialisation des particules ou GSAP:", error);
+                    console.error("Erreur lors de l'initialisation de Particles.js:", error);
                 }
-            }, []);
+
+                // Mettre à jour les couleurs des particules lors du changement de thème
+                const updateParticles = () => {
+                    try {
+                        Particles.refresh();
+                    } catch (error) {
+                        console.error("Erreur lors de la mise à jour des particules:", error);
+                    }
+                };
+
+                window.addEventListener('themeChange', updateParticles);
+                return () => window.removeEventListener('themeChange', updateParticles);
+            }, [theme]);
+
+            const toggleTheme = () => {
+                const newTheme = theme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+                document.body.setAttribute('data-theme', newTheme);
+                // Déclencher un événement personnalisé pour mettre à jour les particules
+                window.dispatchEvent(new Event('themeChange'));
+            };
 
             return (
-                <ErrorBoundary>
-                    <div>
+                <ThemeContext.Provider value={{ theme, toggleTheme }}>
+                    <ErrorBoundary>
                         <Navbar />
                         <Home />
                         <About />
@@ -1366,12 +1479,19 @@ const Experiences = () => {
                         <Stats />
                         <Contact />
                         <Footer />
-                    </div>
-                </ErrorBoundary>
+                    </ErrorBoundary>
+                </ThemeContext.Provider>
             );
         };
 
+        // Rendu de l'application
         ReactDOM.render(<App />, document.getElementById('root'));
+
+        // Nettoyage des animations GSAP et ScrollTrigger lors du démontage
+        window.addEventListener('beforeunload', () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            gsap.killTweensOf('*');
+        });
     </script>
 </body>
 </html>
