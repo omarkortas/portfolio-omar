@@ -604,65 +604,65 @@
             ];
             
             return (
-                <Section id="compétences" title="Compétences" dark={false}>
-                    <div className="mb-16">
-                        <FadeIn>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {skillsWithProgress.map((skill, index) => (
-                                    <div key={skill.name} className="skill-progress">
-                                        <div className="flex justify-between items-center mb-2">
-                                            <div className="flex items-center">
-                                                <i className={`${skill.icon} text-${skill.color}-500 mr-3`}></i>
-                                                <span className="text-[var(--text-secondary)] font-medium">{skill.name}</span>
-                                            </div>
-                                            <span className="text-[var(--accent-blue)] font-semibold">{skill.progress}%</span>
-                                        </div>
-                                        <div className="w-full bg-gray-700 rounded-full h-2.5 overflow-hidden">
-                                            <div 
-                                                className="progress-bar bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-blue)] h-2.5 rounded-full" 
-                                                style={{ width: "0%" }}
-                                                ref={el => {
-                                                    if (!el) return;
-                                                    gsap.to(el, {
-                                                        width: `${skill.progress}%`,
-                                                        duration: 1.5,
-                                                        ease: "power2.out",
-                                                        delay: 0.2 + index * 0.1,
-                                                        scrollTrigger: {
-                                                            trigger: el,
-                                                            start: "top 85%"
-                                                        }
-                                                    });
-                                                }}
-                                            ></div>
-                                        </div>
+        <Section id="compétences" title="Compétences" dark={false}>
+            <div className="mb-16">
+                <FadeIn>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {skillsWithProgress.map((skill, index) => (
+                            <div key={skill.name} className="skill-progress">
+                                <div className="flex justify-between items-center mb-2">
+                                    <div className="flex items-center">
+                                        <i className={`${skill.icon} text-${skill.color}-500 mr-3`}></i>
+                                        <span className="text-[var(--text-secondary)] font-medium">{skill.name}</span>
                                     </div>
-                                ))}
+                                    <span className="text-[var(--accent-blue)] font-semibold">{skill.progress}%</span>
+                                </div>
+                                <div className="w-full bg-[var(--border-color)] rounded-full h-2.5 overflow-hidden">
+                                    <div 
+                                        className="progress-bar bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-purple)] h-2.5 rounded-full" 
+                                        style={{ width: "0%" }}
+                                        ref={el => {
+                                            if (!el) return;
+                                            gsap.to(el, {
+                                                width: `${skill.progress}%`,
+                                                duration: 1.5,
+                                                ease: "power2.out",
+                                                delay: 0.2 + index * 0.1,
+                                                scrollTrigger: {
+                                                    trigger: el,
+                                                    start: "top 85%"
+                                                }
+                                            });
+                                        }}
+                                    ></div>
+                                </div>
                             </div>
-                        </FadeIn>
+                        ))}
                     </div>
-                    
-                    <div className="mt-16">
-                        <FadeIn delay={0.3}>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                {techCategories.map((category) => (
-                                    <div key={category.title} className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300 transform hover:-translate-y-2 hover:shadow-lg">
-                                        <h3 className="text-xl font-semibold mb-4 text-[var(--accent-blue)]">{category.title}</h3>
-                                        <div className="flex flex-wrap gap-2">
-                                            {category.techs.map((tech) => (
-                                                <span key={tech} className="px-3 py-1 bg-gray-700 text-[var(--text-secondary)] rounded-full text-xs">
-                                                    {tech}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
+                </FadeIn>
+            </div>
+            
+            <div className="mt-16">
+                <FadeIn delay={0.3}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {techCategories.map((category) => (
+                            <div key={category.title} className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300 transform hover:-translate-y-2 hover:shadow-lg">
+                                <h3 className="text-xl font-semibold mb-4 text-[var(--accent-blue)]">{category.title}</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {category.techs.map((tech) => (
+                                        <span key={tech} className="px-3 py-1 bg-[var(--border-color)] text-[var(--text-secondary)] rounded-full text-xs">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </FadeIn>
+                        ))}
                     </div>
-                </Section>
-            );
-        };
+                </FadeIn>
+            </div>
+        </Section>
+    );
+};
 
         // Section Projets améliorée avec effets et modal
         const Projects = () => {
@@ -735,46 +735,46 @@
                             <h3 className="text-2xl font-semibold text-[var(--accent-blue)] mb-8">Projets</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {items.filter(item => item.type === "project").map((project, index) => (
-                                    <FadeIn key={project.title} delay={index * 0.1} className="h-full">
-                                        <div className="project-card bg-[var(--card-bg)] backdrop-blur-lg rounded-2xl overflow-hidden border border-[var(--border-color)] h-full group relative">
-                                            <div className="relative overflow-hidden h-64">
-                                                <img 
-                                                    src={project.img} 
-                                                    alt={project.title} 
-                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                                                    onError={() => console.error(`Image ${project.img} failed to load`)}
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                                                <div className="absolute top-4 right-4 bg-[var(--accent-blue)] text-[var(--text-primary)] px-3 py-1 rounded-full text-xs font-medium">
-                                                    Projet
-                                                </div>
-                                            </div>
-                                            <div className="p-6">
-                                                <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-blue)] transition-colors">{project.title}</h3>
-                                                <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">{project.desc}</p>
-                                                <div className="flex flex-wrap gap-2 mb-4">
-                                                    {project.techs.map((tech, i) => (
-                                                        <span 
-                                                            key={tech} 
-                                                            className="px-2 py-1 bg-gray-700 text-[var(--accent-blue)] rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
-                                                            style={{ transitionDelay: `${i * 50}ms` }}
-                                                        >
-                                                            {tech}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                                <button 
-                                                    onClick={() => openModal(project)}
-                                                    className="inline-flex items-center text-[var(--accent-blue)] hover:text-blue-300 text-sm font-medium group"
-                                                >
-                                                    Voir les détails
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                 <FadeIn key={project.title} delay={index * 0.1} className="h-full">
+                                <div className="project-card bg-[var(--card-bg)] backdrop-blur-lg rounded-2xl overflow-hidden border border-[var(--border-color)] hover:border-[var(--accent-blue)] h-full group relative transition-all duration-300">
+                                    <div className="relative overflow-hidden h-64">
+                                        <img 
+                                            src={project.img} 
+                                            alt={project.title} 
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                            onError={() => console.error(`Image ${project.img} failed to load`)}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                                        <div className="absolute top-4 right-4 bg-[var(--accent-blue)] text-[var(--text-primary)] px-3 py-1 rounded-full text-xs font-medium">
+                                            Projet
                                         </div>
-                                    </FadeIn>
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-blue)] transition-colors">{project.title}</h3>
+                                        <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">{project.desc}</p>
+                                        <div className="flex flex-wrap gap-2 mb-4">
+                                            {project.techs.map((tech, i) => (
+                                                <span 
+                                                    key={tech} 
+                                                    className="px-2 py-1 bg-[var(--border-color)] text-[var(--accent-blue)] rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
+                                                    style={{ transitionDelay: `${i * 50}ms` }}
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <button 
+                                            onClick={() => openModal(project)}
+                                            className="inline-flex items-center text-[var(--accent-blue)] hover:text-[var(--accent-blue)]/80 text-sm font-medium group"
+                                        >
+                                            Voir les détails
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </FadeIn>
                                 ))}
                             </div>
                         </div>
@@ -798,32 +798,33 @@
                                                     Certification
                                                 </div>
                                             </div>
-                                            <div className="p-6">
-                                                <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-purple)] transition-colors">{cert.title}</h3>
-                                                <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">{cert.desc}</p>
-                                                <div className="flex flex-wrap gap-2 mb-4">
-                                                    {cert.techs.map((tech, i) => (
-                                                        <span 
-                                                            key={tech} 
-                                                            className="px-2 py-1 bg-gray-700 text-[var(--accent-purple)] rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
-                                                            style={{ transitionDelay: `${i * 50}ms` }}
-                                                        >
-                                                            {tech}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                                <button 
-                                                    onClick={() => openModal(cert)}
-                                                    className="inline-flex items-center text-[var(--accent-purple)] hover:text-purple-300 text-sm font-medium group"
-                                                >
-                                                    Voir les détails
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </FadeIn>
+<div className="p-6">
+                <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent-purple)] transition-colors">{cert.title}</h3>
+                <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">{cert.desc}</p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {cert.techs.map((tech, i) => (
+                        <span 
+                            key={tech} 
+                            className="px-2 py-1 bg-[var(--border-color)] text-[var(--accent-purple-dark)]
+ rounded-full text-xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]"
+                            style={{ transitionDelay: `${i * 50}ms` }}
+                        >
+                            {tech}
+                        </span>
+                    ))}
+                </div>
+                <button 
+                    onClick={() => openModal(cert)}
+                    className="inline-flex items-center text-[var(--accent-purple)] hover:text-[var(--accent-purple)]/80 text-sm font-medium group"
+                >
+                    Voir les détails
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </FadeIn>
                                 ))}
                             </div>
                         </div>
@@ -1230,163 +1231,170 @@
             };
 
             return (
-                <Section id="contact" title="Contact" dark={true}>
-                    <div className="grid md:grid-cols-2 gap-12">
-                        <FadeIn direction="left">
-                            <div className="space-y-6">
-                                <h3 className="text-2xl font-semibold text-[var(--accent-blue)]">Prenons contact</h3>
-                                <p className="text-[var(--text-secondary)]">
-                                    Vous avez un projet ou une question ? N'hésitez pas à me contacter, je vous répondrai dès que possible.
-                                </p>
-                                
-                                <div className="space-y-4 mt-6">
-                                    <div className="flex items-start gap-4">
-                                        <div className="mt-1 text-[var(--accent-blue)]">
-                                            <i className="fas fa-envelope text-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-[var(--text-primary)] font-medium">Email</h4>
-                                            <a href="mailto:omaromarkortas@gmail.com" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
-                                                omaromarkortas@gmail.com
-                                            </a>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-start gap-4">
-                                        <div className="mt-1 text-[var(--accent-blue)]">
-                                            <i className="fas fa-phone text-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-[var(--text-primary)] font-medium">Téléphone</h4>
-                                            <a href="tel:+21699749793" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
-                                                +216 99 749 793
-                                            </a>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="flex items-start gap-4">
-                                        <div className="mt-1 text-[var(--accent-blue)]">
-                                            <i className="fab fa-linkedin text-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-[var(--text-primary)] font-medium">LinkedIn</h4>
-                                            <a 
-                                                href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition"
-                                            >
-                                                Omar El Farouk Kortas
-                                            </a>
-                                        </div>
-                                    </div>
+        <Section id="contact" title="Contact" dark={true}>
+            <div className="grid md:grid-cols-2 gap-12">
+                {/* Partie gauche - Informations de contact */}
+                <FadeIn direction="left">
+                    <div className="space-y-6">
+                        <h3 className="text-2xl font-semibold text-[var(--accent-blue)]">Prenons contact</h3>
+                        <p className="text-[var(--text-secondary)]">
+                            Vous avez un projet ou une question ? N'hésitez pas à me contacter, je vous répondrai dès que possible.
+                        </p>
+                        
+                        <div className="space-y-4 mt-6">
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1 text-[var(--accent-blue)]">
+                                    <i className="fas fa-envelope text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-[var(--text-primary)] font-medium">Email</h4>
+                                    <a href="mailto:omaromarkortas@gmail.com" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
+                                        omaromarkortas@gmail.com
+                                    </a>
                                 </div>
                             </div>
-                        </FadeIn>
-
-                        <FadeIn direction="right" delay={0.2}>
-                            <div className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300">
-                                <form onSubmit={handleSubmit} className="space-y-5">
-                                    <div>
-                                        <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                            Nom complet <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="name"
-                                            name="name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            required
-                                            disabled={isSubmitting}
-                                            className="w-full px-4 py-3 bg-gray-700 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
-                                            placeholder="Votre nom"
-                                        />
-                                    </div>
-                                    
-                                    <div>
-                                        <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                            Email <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            required
-                                            disabled={isSubmitting}
-                                            className="w-full px-4 py-3 bg-gray-700 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
-                                            placeholder="votre@email.com"
-                                        />
-                                    </div>
-                                    
-                                    <div>
-                                        <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                            Message <span className="text-red-500">*</span>
-                                        </label>
-                                        <textarea
-                                            id="message"
-                                            name="message"
-                                            rows="5"
-                                            value={formData.message}
-                                            onChange={handleChange}
-                                            required
-                                            disabled={isSubmitting}
-                                            className="w-full px-4 py-3 bg-gray-700 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
-                                            placeholder="Dites-moi en quoi puis-je vous aider..."
-                                        ></textarea>
-                                    </div>
-                                    
-                                    <div className="pt-2">
-                                        <button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            className={`w-full flex justify-center items-center px-6 py-3 rounded-lg font-medium transition duration-300 ${
-                                                isSubmitting
-                                                    ? 'bg-[var(--accent-blue)]/70 cursor-not-allowed'
-                                                    : 'bg-[var(--accent-blue)] hover:bg-blue-700 transform hover:scale-[1.02]'
-                                            }`}
-                                        >
-                                            {isSubmitting ? (
-                                                <>
-                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-[var(--text-primary)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
-                                                    Envoi en cours...
-                                                </>
-                                            ) : (
-                                                'Envoyer le message'
-                                            )}
-                                        </button>
-                                    </div>
-                                </form>
-                                
-                                {status.message && (
-                                    <div className={`mt-4 p-4 rounded-lg border ${
-                                        status.type === "success" 
-                                            ? "bg-green-900/20 border-green-700 text-green-400" 
-                                            : "bg-red-900/20 border-red-700 text-red-400"
-                                    }`}>
-                                        <div className="flex items-start gap-3">
-                                            <div className="mt-0.5">
-                                                {status.type === "success" ? (
-                                                    <i className="fas fa-check-circle"></i>
-                                                ) : (
-                                                    <i className="fas fa-exclamation-circle"></i>
-                                                )}
-                                            </div>
-                                            <div>{status.message}</div>
-                                        </div>
-                                    </div>
-                                )}
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1 text-[var(--accent-blue)]">
+                                    <i className="fas fa-phone text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-[var(--text-primary)] font-medium">Téléphone</h4>
+                                    <a href="tel:+21699749793" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
+                                        +216 99 749 793
+                                    </a>
+                                </div>
                             </div>
-                        </FadeIn>
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1 text-[var(--accent-blue)]">
+                                    <i className="fab fa-linkedin text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-[var(--text-primary)] font-medium">LinkedIn</h4>
+                                    <a 
+                                        href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition"
+                                    >
+                                        Omar El Farouk Kortas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </Section>
-            );
-        };
+                </FadeIn>
+
+                {/* Partie droite - Formulaire */}
+                <FadeIn direction="right" delay={0.2}>
+                    <div className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300">
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            {/* Champ Nom complet */}
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                                    Nom complet <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
+                                    placeholder="Votre nom"
+                                />
+                            </div>
+                            
+                            {/* Champ Email */}
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                                    Email <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
+                                    placeholder="votre@email.com"
+                                />
+                            </div>
+                            
+                            {/* Champ Message */}
+                            <div>
+                                <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                                    Message <span className="text-red-500">*</span>
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="5"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={isSubmitting}
+                                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
+                                    placeholder="Dites-moi en quoi puis-je vous aider..."
+                                ></textarea>
+                            </div>
+                            
+                            {/* Bouton d'envoi */}
+                            <div className="pt-2">
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className={`w-full flex justify-center items-center px-6 py-3 rounded-lg font-medium transition duration-300 ${
+                                        isSubmitting
+                                            ? 'bg-[var(--accent-blue)]/70 cursor-not-allowed'
+                                            : 'bg-[var(--accent-blue)] hover:bg-[var(--accent-blue)]/90 transform hover:scale-[1.02]'
+                                    } text-[var(--text-primary)]`}
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Envoi en cours...
+                                        </>
+                                    ) : (
+                                        'Envoyer le message'
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                        
+                        {/* Message de statut */}
+                        {status.message && (
+                            <div className={`mt-4 p-4 rounded-lg border ${
+                                status.type === "success" 
+                                    ? "bg-green-900/20 border-green-700 text-green-400" 
+                                    : "bg-red-900/20 border-red-700 text-red-400"
+                            }`}>
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        {status.type === "success" ? (
+                                            <i className="fas fa-check-circle"></i>
+                                        ) : (
+                                            <i className="fas fa-exclamation-circle"></i>
+                                        )}
+                                    </div>
+                                    <div>{status.message}</div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </FadeIn>
+            </div>
+        </Section>
+    );
+};
 
         // Footer amélioré
         const Footer = () => {
@@ -1414,58 +1422,51 @@
             const [theme, setTheme] = useState('dark');
 
             useEffect(() => {
-                try {
-                    Particles.init({
-                        selector: '#particles-background',
-                        color: theme === 'dark' ? ['#60A5FA', '#A855F7', '#FFFFFF'] : ['#3B82F6', '#7C3AED', '#000000'],
-                        connectParticles: true,
-                        maxParticles: 100,
-                        speed: 0.6,
-                        sizeVariations: 4,
-                        minDistance: 100,
-                        responsive: [
-                            {
-                                breakpoint: 768,
-                                options: {
-                                    maxParticles: 60,
-                                    minDistance: 80
-                                }
-                            },
-                            {
-                                breakpoint: 425,
-                                options: {
-                                    maxParticles: 40,
-                                    minDistance: 60
-                                }
-                            }
-                        ],
-                        particleOpacity:
-            0.7
-                    });
-                } catch (error) {
-                    console.error("Erreur lors de l'initialisation de Particles.js:", error);
+    try {
+        Particles.init({
+            selector: '#particles-background',
+            color: theme === 'dark' ? ['#60A5FA', '#A855F7', '#FFFFFF'] : ['#3B82F6', '#6B21A8', '#000000'],
+            connectParticles: true,
+            maxParticles: 100,
+            speed: 0.6,
+            sizeVariations: 4,
+            minDistance: 100,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    options: { maxParticles: 60, minDistance: 80 }
+                },
+                {
+                    breakpoint: 425,
+                    options: { maxParticles: 40, minDistance: 60 }
                 }
+            ],
+            particleOpacity: 0.7
+        });
+    } catch (error) {
+        console.error("Erreur lors de l'initialisation de Particles.js:", error);
+    }
 
-                // Mettre à jour les couleurs des particules lors du changement de thème
-                const updateParticles = () => {
-                    try {
-                        Particles.refresh();
-                    } catch (error) {
-                        console.error("Erreur lors de la mise à jour des particules:", error);
-                    }
-                };
+    const updateParticles = () => {
+        try {
+            Particles.refresh();
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour des particules:", error);
+        }
+    };
 
-                window.addEventListener('themeChange', updateParticles);
-                return () => window.removeEventListener('themeChange', updateParticles);
-            }, [theme]);
+    window.addEventListener('themeChange', updateParticles);
+    return () => window.removeEventListener('themeChange', updateParticles);
+}, [theme]);
 
-            const toggleTheme = () => {
-                const newTheme = theme === 'dark' ? 'light' : 'dark';
-                setTheme(newTheme);
-                document.body.setAttribute('data-theme', newTheme);
-                // Déclencher un événement personnalisé pour mettre à jour les particules
-                window.dispatchEvent(new Event('themeChange'));
-            };
+const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.body.setAttribute('data-theme', newTheme);
+    window.dispatchEvent(new Event('themeChange'));
+    // Forcer un re-render pour appliquer les styles immédiatement
+    window.dispatchEvent(new Event('resize'));
+};
 
             return (
                 <ThemeContext.Provider value={{ theme, toggleTheme }}>
