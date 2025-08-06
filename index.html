@@ -358,7 +358,7 @@
                 );
             }, []);
             
-            const navItems = ['Accueil', 'A propos', 'Compétences', 'Projets', 'Expériences', 'Statistiques', 'Contact'];
+            const navItems = ['Accueil', 'A propos', 'Compétences', 'Projets','Services', 'Expériences', 'Statistiques', 'Contact'];
             
             return (
                 <nav ref={navbarRef} className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-gray-900 shadow-lg backdrop-blur-lg bg-opacity-80' : 'bg-transparent'}`}>
@@ -1098,7 +1098,236 @@
                 </Section>
             );
         };
+// Section Services
+const Services = () => {
+    const services = [
+        { 
+            title: "Web Design", 
+            icon: "fas fa-laptop", 
+            description: "Création de designs web modernes et intuitifs.",
+            tech: ["Figma", "Adobe XD"],
+            color: "#3B82F6"
+        },
+        { 
+            title: "Web Development", 
+            icon: "fas fa-code", 
+            description: "Développement de sites web performants et fonctionnels.",
+            tech: ["React", "Next.js", "TypeScript"],
+            color: "#10B981"
+        },
+        { 
+            title: "Responsive Design", 
+            icon: "fas fa-mobile-alt", 
+            description: "Design adapté à tous les appareils (mobile, tablette, desktop).",
+            tech: ["Tailwind", "CSS Grid"],
+            color: "#8B5CF6"
+        },
+        { 
+            title: "Mobile Development", 
+            icon: "fas fa-mobile", 
+            description: "Développement d'applications mobiles sur mesure.",
+            tech: ["React Native", "Flutter"],
+            color: "#F59E0B"
+        },
+        { 
+            title: "Graphic Design", 
+            icon: "fas fa-paint-brush", 
+            description: "Conception d'affiches, posts pour réseaux sociaux et catalogues.",
+            tech: ["Photoshop", "Illustrator", "Canva"],
+            color: "#EF4444"
+        },
+        { 
+            title: "Web Designer", 
+            icon: "fas fa-palette", 
+            description: "Services complets de design web personnalisé.",
+            tech: ["UI/UX", "Branding", "Prototyping"],
+            color: "#06B6D4"
+        },
+    ];
 
+    const [hoveredIndex, setHoveredIndex] = useState(-1);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    const handleMouseMove = (e, index) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePosition({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        });
+    };
+
+    return (
+        <Section id="services" title="Services" dark={false}>
+            {/* Grille hexagonale en arrière-plan */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none">
+                <div className="grid grid-cols-12 gap-4 h-full">
+                    {Array.from({ length: 60 }).map((_, i) => (
+                        <div 
+                            key={i} 
+                            className="w-2 h-2 bg-[var(--accent-blue)] rounded-full animate-pulse" 
+                            style={{ 
+                                animationDelay: `${i * 0.1}s`,
+                                animationDuration: `${2 + (i % 3)}s`
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {services.map((service, index) => (
+                    <FadeIn key={service.title} delay={index * 0.1}>
+                        <div 
+                            className="group relative overflow-hidden bg-gradient-to-br from-[var(--card-bg)]/90 via-[var(--card-bg)]/70 to-transparent backdrop-blur-2xl border border-[var(--border-color)]/50 rounded-3xl transition-all duration-700 ease-out transform-gpu perspective-1000"
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(-1)}
+                            onMouseMove={(e) => handleMouseMove(e, index)}
+                            style={{
+                                transform: hoveredIndex === index 
+                                    ? `translateY(-8px) rotateX(5deg) rotateY(${(mousePosition.x - 150) * 0.02}deg)` 
+                                    : 'translateY(0) rotateX(0) rotateY(0)',
+                                boxShadow: hoveredIndex === index 
+                                    ? `0 25px 50px -12px ${service.color}20, 0 0 0 1px ${service.color}30`
+                                    : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                            }}
+                        >
+                            {/* Effet de lumière qui suit la souris */}
+                            <div 
+                                className="absolute w-32 h-32 rounded-full opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500 pointer-events-none"
+                                style={{
+                                    background: `radial-gradient(circle, ${service.color}40 0%, transparent 70%)`,
+                                    left: mousePosition.x - 64,
+                                    top: mousePosition.y - 64,
+                                }}
+                            />
+
+                            {/* Code binaire animé en arrière-plan */}
+                            <div className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-10 transition-opacity duration-500">
+                                <div className="absolute inset-0 text-xs font-mono text-[var(--accent-blue)] leading-none whitespace-nowrap animate-scroll">
+                                    {Array.from({ length: 20 }).map((_, i) => (
+                                        <div key={i} className="animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}>
+                                            {Math.random().toString(2).substring(2, 50)}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="relative z-20 p-6">
+                                {/* Header avec icône et indicateur de statut */}
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="relative">
+                                        <div 
+                                            className="w-12 h-12 rounded-xl flex items-center justify-center relative overflow-hidden"
+                                            style={{ 
+                                                background: `linear-gradient(135deg, ${service.color}20, ${service.color}10)`,
+                                                border: `2px solid ${service.color}30`
+                                            }}
+                                        >
+                                            {/* Effet de scan */}
+                                            <div 
+                                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                                                style={{ width: '200%' }}
+                                            />
+                                            <i 
+                                                className={`${service.icon} text-xl transition-all duration-300 group-hover:scale-110`}
+                                                style={{ color: service.color }}
+                                            />
+                                        </div>
+                                        
+                                        {/* Indicateur de statut */}
+                                        <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-[var(--card-bg)] animate-pulse"
+                                             style={{ backgroundColor: service.color }} />
+                                    </div>
+
+                                    {/* Numéro d'index stylisé */}
+                                    <div className="text-right">
+                                        <div className="text-2xl font-black opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+                                            {String(index + 1).padStart(2, '0')}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Contenu principal */}
+                                <div className="space-y-3">
+                                    <h3 className="text-lg font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-blue)] transition-colors duration-300">
+                                        {service.title}
+                                    </h3>
+                                    
+                                    {/* Barre de progression animée */}
+                                    <div className="w-full h-1 bg-[var(--border-color)] rounded-full overflow-hidden">
+                                        <div 
+                                            className="h-full rounded-full transition-all duration-1000 ease-out"
+                                            style={{ 
+                                                width: hoveredIndex === index ? '100%' : '0%',
+                                                backgroundColor: service.color
+                                            }}
+                                        />
+                                    </div>
+
+                                    <p className="text-[var(--text-secondary)] leading-relaxed group-hover:text-[var(--text-primary)] transition-colors duration-300">
+                                        {service.description}
+                                    </p>
+
+                                    {/* Stack technique avec badges */}
+                                    <div className="flex flex-wrap gap-2 pt-2">
+                                        {service.tech.map((tech, techIndex) => (
+                                            <span 
+                                                key={tech}
+                                                className="px-3 py-1 text-xs font-semibold rounded-full border transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                                                style={{ 
+                                                    backgroundColor: `${service.color}10`,
+                                                    borderColor: `${service.color}30`,
+                                                    color: service.color,
+                                                    transitionDelay: `${techIndex * 100}ms`
+                                                }}
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Ligne de connection au hover */}
+                                <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[var(--accent-blue)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            </div>
+
+                            {/* Effet de border gradient animé */}
+                            <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                <div 
+                                    className="absolute inset-0 rounded-3xl"
+                                    style={{
+                                        background: `conic-gradient(from 0deg, ${service.color}40, transparent, ${service.color}40)`,
+                                        padding: '2px',
+                                        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                        WebkitMaskComposite: 'subtract'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </FadeIn>
+                ))}
+            </div>
+
+            
+
+            <style jsx>{`
+                @keyframes scroll {
+                    0% { transform: translateY(100%); }
+                    100% { transform: translateY(-100%); }
+                }
+                .animate-scroll {
+                    animation: scroll 10s linear infinite;
+                }
+                .perspective-1000 {
+                    perspective: 1000px;
+                }
+                .transform-gpu {
+                    transform-style: preserve-3d;
+                }
+            `}</style>
+        </Section>
+    );
+};
         // Composant pour les statistiques
         const Stats = () => {
             const stats = [
@@ -1418,72 +1647,66 @@
         };
 
         // Composant principal
-        const App = () => {
-            const [theme, setTheme] = useState('dark');
+       const App = () => {
+    const [theme, setTheme] = useState('dark');
 
-            useEffect(() => {
-    try {
-        Particles.init({
-            selector: '#particles-background',
-            color: theme === 'dark' ? ['#60A5FA', '#A855F7', '#FFFFFF'] : ['#3B82F6', '#6B21A8', '#000000'],
-            connectParticles: true,
-            maxParticles: 100,
-            speed: 0.6,
-            sizeVariations: 4,
-            minDistance: 100,
-            responsive: [
-                {
-                    breakpoint: 768,
-                    options: { maxParticles: 60, minDistance: 80 }
-                },
-                {
-                    breakpoint: 425,
-                    options: { maxParticles: 40, minDistance: 60 }
-                }
-            ],
-            particleOpacity: 0.7
-        });
-    } catch (error) {
-        console.error("Erreur lors de l'initialisation de Particles.js:", error);
-    }
-
-    const updateParticles = () => {
+    useEffect(() => {
         try {
-            Particles.refresh();
+            Particles.init({
+                selector: '#particles-background',
+                color: theme === 'dark' ? ['#60A5FA', '#A855F7', '#FFFFFF'] : ['#3B82F6', '#6B21A8', '#000000'],
+                connectParticles: true,
+                maxParticles: 100,
+                speed: 0.6,
+                sizeVariations: 4,
+                minDistance: 100,
+                responsive: [
+                    { breakpoint: 768, options: { maxParticles: 60, minDistance: 80 } },
+                    { breakpoint: 425, options: { maxParticles: 40, minDistance: 60 } }
+                ],
+                particleOpacity: 0.7
+            });
         } catch (error) {
-            console.error("Erreur lors de la mise à jour des particules:", error);
+            console.error("Erreur lors de l'initialisation de Particles.js:", error);
         }
+
+        const updateParticles = () => {
+            try {
+                Particles.refresh();
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour des particules:", error);
+            }
+        };
+
+        window.addEventListener('themeChange', updateParticles);
+        return () => window.removeEventListener('themeChange', updateParticles);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        document.body.setAttribute('data-theme', newTheme);
+        window.dispatchEvent(new Event('themeChange'));
+        window.dispatchEvent(new Event('resize'));
     };
 
-    window.addEventListener('themeChange', updateParticles);
-    return () => window.removeEventListener('themeChange', updateParticles);
-}, [theme]);
-
-const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    document.body.setAttribute('data-theme', newTheme);
-    window.dispatchEvent(new Event('themeChange'));
-    // Forcer un re-render pour appliquer les styles immédiatement
-    window.dispatchEvent(new Event('resize'));
+    return (
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <ErrorBoundary>
+                <Navbar />
+                <Home />
+                <About />
+                <Skills />
+                <Projects />
+                <Services /> 
+                <Experiences />
+                <Stats />
+                <Contact />
+                <Footer />
+            </ErrorBoundary>
+        </ThemeContext.Provider>
+    );
 };
-
-            return (
-                <ThemeContext.Provider value={{ theme, toggleTheme }}>
-                    <ErrorBoundary>
-                        <Navbar />
-                        <Home />
-                        <About />
-                        <Skills />
-                        <Projects />
-                        <Experiences />
-                        <Stats />
-                        <Contact />
-                        <Footer />
-                    </ErrorBoundary>
-                </ThemeContext.Provider>
-            );
-        };
 
         // Rendu de l'application
         ReactDOM.render(<App />, document.getElementById('root'));
