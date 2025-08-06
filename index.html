@@ -1329,322 +1329,1062 @@ const Services = () => {
     );
 };
         // Composant pour les statistiques
-        const Stats = () => {
-            const stats = [
-                { value: 10, label: 'Projets Terminés', icon: 'fas fa-project-diagram', accent: 'blue-500' },
-                { value: 1, label: 'Années d\'Expérience', icon: 'fas fa-calendar-alt', accent: 'purple-500' },
-                { value: 10, label: 'Technologies Maîtrisées', icon: 'fas fa-code', accent: 'blue-500' },
-                { value: 6, label: 'Clients Satisfaits', icon: 'fas fa-smile', accent: 'purple-500' }
-            ];
+const Stats = () => {
+    const stats = [
+        { 
+            value: 10, 
+            label: 'Projets Terminés', 
+            icon: 'fas fa-project-diagram', 
+            accent: '#3B82F6',
+            unit: '',
+            description: 'Applications full-stack déployées',
+            gradient: 'from-blue-500/20 to-cyan-500/20'
+        },
+        { 
+            value: 1, 
+            label: 'Années d\'Expérience', 
+            icon: 'fas fa-calendar-alt', 
+            accent: '#8B5CF6',
+            unit: '+',
+            description: 'Développement moderne',
+            gradient: 'from-purple-500/20 to-pink-500/20'
+        },
+        { 
+            value: 10, 
+            label: 'Technologies Maîtrisées', 
+            icon: 'fas fa-code', 
+            accent: '#10B981',
+            unit: '+',
+            description: 'Frameworks & langages',
+            gradient: 'from-emerald-500/20 to-teal-500/20'
+        },
+        { 
+            value: 99, 
+            label: 'Satisfaction Client', 
+            icon: 'fas fa-smile', 
+            accent: '#F59E0B',
+            unit: '%',
+            description: 'Taux de recommandation',
+            gradient: 'from-amber-500/20 to-orange-500/20'
+        }
+    ];
 
-            const [counts, setCounts] = useState(stats.map(() => 0));
+    const [counts, setCounts] = useState(stats.map(() => 0));
+    const [isInView, setIsInView] = useState(false);
+    const [hoveredIndex, setHoveredIndex] = useState(-1);
+    const sectionRef = useRef(null);
 
-            useEffect(() => {
-                const animateCounts = () => {
-                    const intervals = stats.map((stat, index) => {
-                        const increment = stat.value / 50;
-                        return setInterval(() => {
-                            setCounts((prev) => {
-                                const newCounts = [...prev];
-                                if (newCounts[index] < stat.value) {
-                                    newCounts[index] = Math.min(newCounts[index] + increment, stat.value);
-                                }
-                                return newCounts;
-                            });
-                        }, 20);
-                    });
+    // Intersection Observer pour déclencher l'animation
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !isInView) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.3 }
+        );
 
-                    return () => intervals.forEach(clearInterval);
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [isInView]);
+
+    // Animation des compteurs
+    useEffect(() => {
+        if (!isInView) return;
+
+        const animateCounts = () => {
+            const duration = 2000; // 2 secondes
+            const frameRate = 60;
+            const totalFrames = (duration / 1000) * frameRate;
+
+            stats.forEach((stat, index) => {
+                let currentFrame = 0;
+                const increment = stat.value / totalFrames;
+
+                const animate = () => {
+                    if (currentFrame < totalFrames) {
+                        setCounts(prev => {
+                            const newCounts = [...prev];
+                            newCounts[index] = Math.min(
+                                Math.round(increment * currentFrame), 
+                                stat.value
+                            );
+                            return newCounts;
+                        });
+                        currentFrame++;
+                        requestAnimationFrame(animate);
+                    }
                 };
-
-                animateCounts();
-            }, [stats]);
-
-            return (
-                <Section id="statistiques" title="Statistiques" dark={false}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-10 px-4">
-                        {stats.map((stat, index) => (
-                            <FadeIn key={stat.label} delay={index * 0.2}>
-                                <div
-                                    className={`bg-[var(--card-bg)] backdrop-blur-xl p-8 rounded-2xl border border-[var(--border-color)] hover:border-${stat.accent} transition-all duration-500 transform hover:-translate-y-3 hover:shadow-xl hover:shadow-${stat.accent}/20 text-center cursor-pointer`}
-                                    role="region"
-                                    aria-label={`Statistique: ${stat.label}`}
-                                >
-                                    <i
-                                        className={`${stat.icon} text-${stat.accent} text-4xl mb-6 transition-transform duration-300 hover:scale-110`}
-                                        aria-label={`Icône pour ${stat.label}`}
-                                    ></i>
-                                    <h3 className="text-4xl font-extrabold text-[var(--text-primary)] mb-3">
-                                        {Math.round(counts[index])}
-                                    </h3>
-                                    <p className="text-[var(--text-primary)] text-base font-semibold">{stat.label}</p>
-                                </div>
-                            </FadeIn>
-                        ))}
-                    </div>
-                </Section>
-            );
+                
+                // Délai échelonné pour chaque compteur
+                setTimeout(animate, index * 200);
+            });
         };
 
-        const Contact = () => {
-            const [formData, setFormData] = useState({ 
-                name: "", 
-                email: "", 
-                message: "" 
+        animateCounts();
+    }, [isInView]);
+
+    return (
+        <Section id="statistiques" title="Performance Metrics" dark={false}>
+            <div ref={sectionRef} className="relative">
+                {/* Grille de connexions en arrière-plan */}
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                    <svg className="w-full h-full" viewBox="0 0 1000 400">
+                        {/* Lignes de connexion animées */}
+                        <defs>
+                            <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="var(--accent-blue)" stopOpacity="0"/>
+                                <stop offset="50%" stopColor="var(--accent-blue)" stopOpacity="0.6"/>
+                                <stop offset="100%" stopColor="var(--accent-blue)" stopOpacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <line 
+                                key={i}
+                                x1={250 + i * 250} y1="200" 
+                                x2={500 + i * 250} y2="200"
+                                stroke="url(#connectionGradient)"
+                                strokeWidth="2"
+                                className="animate-pulse"
+                                style={{ animationDelay: `${i * 0.5}s`, animationDuration: '3s' }}
+                            />
+                        ))}
+                    </svg>
+                </div>
+
+                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {stats.map((stat, index) => (
+                        <FadeIn key={stat.label} delay={index * 0.15}>
+                            <div
+                                className="group relative overflow-hidden bg-gradient-to-br from-[var(--card-bg)]/95 to-transparent backdrop-blur-2xl rounded-3xl border border-[var(--border-color)]/40 transition-all duration-700 ease-out cursor-pointer"
+                                onMouseEnter={() => setHoveredIndex(index)}
+                                onMouseLeave={() => setHoveredIndex(-1)}
+                                style={{
+                                    transform: hoveredIndex === index 
+                                        ? 'translateY(-12px) scale(1.02)' 
+                                        : 'translateY(0) scale(1)',
+                                    boxShadow: hoveredIndex === index 
+                                        ? `0 25px 50px -12px ${stat.accent}20, 0 0 0 1px ${stat.accent}20`
+                                        : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                }}
+                            >
+                                {/* Effet de glow dynamique */}
+                                <div 
+                                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+                                    style={{
+                                        background: `radial-gradient(circle at center, ${stat.accent}15 0%, transparent 70%)`
+                                    }}
+                                />
+
+                                {/* Particules flottantes */}
+                                <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                                    {Array.from({ length: 6 }).map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="absolute w-1 h-1 rounded-full opacity-0 group-hover:opacity-60 transition-all duration-1000"
+                                            style={{
+                                                backgroundColor: stat.accent,
+                                                left: `${20 + i * 15}%`,
+                                                top: `${30 + (i % 3) * 20}%`,
+                                                animationDelay: `${i * 0.2}s`
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+
+                                <div className="relative z-20 p-6 text-center">
+                                    {/* Header avec icône */}
+                                    <div className="relative mb-6">
+                                        <div 
+                                            className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${stat.gradient} border-2 transition-all duration-300 group-hover:scale-110`}
+                                            style={{ borderColor: `${stat.accent}30` }}
+                                        >
+                                            {/* Circuit pattern en arrière-plan */}
+                                            <div className="absolute inset-2 opacity-20">
+                                                <svg viewBox="0 0 60 60" className="w-full h-full">
+                                                    <circle cx="30" cy="30" r="25" fill="none" stroke={stat.accent} strokeWidth="1"/>
+                                                    <circle cx="30" cy="30" r="15" fill="none" stroke={stat.accent} strokeWidth="0.5"/>
+                                                    <circle cx="30" cy="30" r="5" fill="none" stroke={stat.accent} strokeWidth="0.5"/>
+                                                </svg>
+                                            </div>
+
+                                            <i 
+                                                className={`${stat.icon} text-2xl transition-all duration-300 relative z-10`}
+                                                style={{ color: stat.accent }}
+                                            />
+                                        </div>
+
+                                        {/* Indicateur de progression circulaire */}
+                                        <div className="absolute -inset-2">
+                                            <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+                                                <circle
+                                                    cx="50"
+                                                    cy="50"
+                                                    r="45"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    className="text-gray-200 opacity-20"
+                                                />
+                                                <circle
+                                                    cx="50"
+                                                    cy="50"
+                                                    r="45"
+                                                    fill="none"
+                                                    stroke={stat.accent}
+                                                    strokeWidth="3"
+                                                    strokeLinecap="round"
+                                                    strokeDasharray={`${2 * Math.PI * 45}`}
+                                                    strokeDashoffset={`${2 * Math.PI * 45 * (1 - (isInView ? 1 : 0))}`}
+                                                    className="transition-all duration-1000 ease-out opacity-60"
+                                                    style={{ transitionDelay: `${index * 200}ms` }}
+                                                />
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    {/* Compteur principal */}
+                                    <div className="mb-4 space-y-2">
+                                        <div className="flex items-center justify-center gap-1">
+                                            <span 
+                                                className="text-4xl font-black transition-all duration-300 group-hover:scale-110"
+                                                style={{ 
+                                                    color: stat.accent,
+                                                    textShadow: `0 0 20px ${stat.accent}30`
+                                                }}
+                                            >
+                                                {counts[index]}
+                                            </span>
+                                            <span 
+                                                className="text-2xl font-bold opacity-80"
+                                                style={{ color: stat.accent }}
+                                            >
+                                                {stat.unit}
+                                            </span>
+                                        </div>
+                                        
+                                        {/* Ligne de séparation animée */}
+                                        <div className="flex justify-center">
+                                            <div 
+                                                className="h-0.5 rounded-full transition-all duration-500 group-hover:w-16"
+                                                style={{ 
+                                                    width: hoveredIndex === index ? '4rem' : '2rem',
+                                                    background: `linear-gradient(90deg, transparent, ${stat.accent}, transparent)`
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Labels */}
+                                    <div className="space-y-1">
+                                        <h3 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-blue)] transition-colors duration-300 uppercase tracking-wide">
+                                            {stat.label}
+                                        </h3>
+                                        <p className="text-xs text-[var(--text-secondary)] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                                            {stat.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Barre de progression horizontale */}
+                                    <div className="mt-4 w-full h-1 bg-gray-200 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        <div 
+                                            className="h-full rounded-full transition-all duration-1000 ease-out"
+                                            style={{ 
+                                                width: hoveredIndex === index ? '100%' : '0%',
+                                                backgroundColor: stat.accent,
+                                                boxShadow: `0 0 10px ${stat.accent}50`
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Border gradient animé */}
+                                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                    <div 
+                                        className="absolute inset-0 rounded-3xl p-0.5"
+                                        style={{
+                                            background: `conic-gradient(from 0deg, ${stat.accent}60, transparent 120deg, ${stat.accent}60 240deg, transparent)`,
+                                            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                            WebkitMaskComposite: 'subtract'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </FadeIn>
+                    ))}
+                </div>
+
+                {/* Console de monitoring en bas */}
+                <div className="mt-12 mx-auto max-w-4xl">
+                    <div className="bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 overflow-hidden">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700/50">
+                            <div className="flex items-center gap-3">
+                                <div className="flex gap-2">
+                                    <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                                </div>
+                                <span className="text-sm text-gray-400 font-mono">performance-monitor.js</span>
+                            </div>
+                            <div className="text-xs text-gray-500 font-mono">
+                                Real-time metrics • {new Date().toLocaleTimeString()}
+                            </div>
+                        </div>
+                        <div className="p-6 font-mono text-sm space-y-2">
+                            {stats.map((stat, index) => (
+                                <div key={index} className="flex items-center justify-between">
+                                    <span className="text-cyan-400">
+                                        {stat.label.toLowerCase().replace(/\s+/g, '_')}:
+                                    </span>
+                                    <span className="text-green-400">
+                                        {counts[index]}{stat.unit} ✓
+                                    </span>
+                                </div>
+                            ))}
+                            <div className="text-blue-400 mt-4 pt-2 border-t border-gray-700/50">
+                                → System performance: <span className="text-green-400">Optimal</span> 🚀
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </Section>
+    );
+};
+
+const Contact = () => {
+    const [formData, setFormData] = useState({ 
+        name: "", 
+        email: "", 
+        message: "" 
+    });
+    const [status, setStatus] = useState({ 
+        message: "", 
+        type: "" 
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [focusedField, setFocusedField] = useState(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [isTyping, setIsTyping] = useState(false);
+
+    const contactInfo = [
+        {
+            icon: "fas fa-envelope",
+            title: "Email",
+            value: "omaromarkortas@gmail.com",
+            href: "mailto:omaromarkortas@gmail.com",
+            color: "#3B82F6",
+            description: "Réponse sous 24h"
+        },
+        {
+            icon: "fas fa-phone",
+            title: "Téléphone", 
+            value: "+216 99 749 793",
+            href: "tel:+21699749793",
+            color: "#10B981",
+            description: "Disponible 9h-18h"
+        },
+        {
+            icon: "fab fa-linkedin",
+            title: "LinkedIn",
+            value: "Omar El Farouk Kortas",
+            href: "https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/",
+            color: "#0077B5",
+            description: "Réseau professionnel"
+        },
+        {
+            icon: "fas fa-map-marker-alt",
+            title: "Localisation",
+            value: "Sousse, Tunisie",
+            href: "#",
+            color: "#F59E0B",
+            description: "Timezone: GMT+1"
+        }
+    ];
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        setIsTyping(true);
+        setTimeout(() => setIsTyping(false), 1000);
+    };
+
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePosition({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!formData.name || !formData.email || !formData.message) {
+            setStatus({
+                message: "Veuillez remplir tous les champs",
+                type: "error"
             });
-            const [status, setStatus] = useState({ 
-                message: "", 
-                type: "" 
+            return;
+        }
+
+        setIsSubmitting(true);
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name.trim(),
+                    email: formData.email.trim(),
+                    message: formData.message.trim()
+                })
             });
-            const [isSubmitting, setIsSubmitting] = useState(false);
 
-            const handleChange = (e) => {
-                const { name, value } = e.target;
-                setFormData(prev => ({
-                    ...prev,
-                    [name]: value
-                }));
-            };
+            const data = await response.json();
 
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                
-                if (!formData.name || !formData.email || !formData.message) {
-                    setStatus({
-                        message: "Veuillez remplir tous les champs",
-                        type: "error"
-                    });
-                    return;
-                }
+            if (!response.ok) {
+                throw new Error(data.error || "Erreur lors de l'envoi du message");
+            }
 
-                setIsSubmitting(true);
-                
-                try {
-                    const response = await fetch('http://localhost:5000/api/contact', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            name: formData.name.trim(),
-                            email: formData.email.trim(),
-                            message: formData.message.trim()
-                        })
-                    });
+            setStatus({ 
+                message: data.message || "Message envoyé avec succès !", 
+                type: "success" 
+            });
+            setFormData({ name: "", email: "", message: "" });
+            
+        } catch (error) {
+            console.error("Erreur:", error);
+            setStatus({ 
+                message: error.message || "Erreur de connexion au serveur", 
+                type: "error" 
+            });
+        } finally {
+            setIsSubmitting(false);
+            setTimeout(() => {
+                setStatus({ message: "", type: "" });
+            }, 5000);
+        }
+    };
 
-                    const data = await response.json();
+    const getFieldProgress = (field) => {
+        const value = formData[field];
+        if (!value) return 0;
+        const maxLengths = { name: 50, email: 50, message: 500 };
+        return Math.min((value.length / maxLengths[field]) * 100, 100);
+    };
 
-                    if (!response.ok) {
-                        throw new Error(data.error || "Erreur lors de l'envoi du message");
-                    }
+    return (
+        <Section id="contact" title="Get In Touch" dark={true}>
+            {/* Grille de particules animées en arrière-plan */}
+            <div className="absolute inset-0 overflow-hidden opacity-5 pointer-events-none">
+                <div className="grid grid-cols-20 gap-4 h-full animate-pulse">
+                    {Array.from({ length: 100 }).map((_, i) => (
+                        <div 
+                            key={i}
+                            className="w-1 h-1 bg-blue-400 rounded-full"
+                            style={{
+                                animationDelay: `${(i * 0.05)}s`,
+                                animationDuration: `${2 + (i % 3)}s`
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
 
-                    setStatus({ 
-                        message: data.message || "Message envoyé avec succès !", 
-                        type: "success" 
-                    });
-                    setFormData({ name: "", email: "", message: "" });
-                    
-                } catch (error) {
-                    console.error("Erreur:", error);
-                    setStatus({ 
-                        message: error.message || "Erreur de connexion au serveur", 
-                        type: "error" 
-                    });
-                } finally {
-                    setIsSubmitting(false);
-                    const timer = setTimeout(() => {
-                        setStatus({ message: "", type: "" });
-                    }, 5000);
-                    return () => clearTimeout(timer);
-                }
-            };
-
-            return (
-        <Section id="contact" title="Contact" dark={true}>
-            <div className="grid md:grid-cols-2 gap-12">
-                {/* Partie gauche - Informations de contact */}
+            <div className="relative z-10 grid lg:grid-cols-2 gap-16">
+                {/* Section gauche - Informations de contact */}
                 <FadeIn direction="left">
-                    <div className="space-y-6">
-                        <h3 className="text-2xl font-semibold text-[var(--accent-blue)]">Prenons contact</h3>
-                        <p className="text-[var(--text-secondary)]">
-                            Vous avez un projet ou une question ? N'hésitez pas à me contacter, je vous répondrai dès que possible.
-                        </p>
-                        
-                        <div className="space-y-4 mt-6">
-                            <div className="flex items-start gap-4">
-                                <div className="mt-1 text-[var(--accent-blue)]">
-                                    <i className="fas fa-envelope text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 className="text-[var(--text-primary)] font-medium">Email</h4>
-                                    <a href="mailto:omaromarkortas@gmail.com" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
-                                        omaromarkortas@gmail.com
-                                    </a>
-                                </div>
+                    <div className="space-y-8">
+                        {/* Header avec animation de typing */}
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3">
+                                <h3 className="text-3xl font-bold bg-gradient-to-r from-[var(--accent-blue)] to-cyan-400 bg-clip-text text-transparent">
+                                    Collaborons ensemble
+                                </h3>
+                                {isTyping && (
+                                    <div className="w-0.5 h-8 bg-[var(--accent-blue)] animate-pulse"></div>
+                                )}
                             </div>
-                            
-                            <div className="flex items-start gap-4">
-                                <div className="mt-1 text-[var(--accent-blue)]">
-                                    <i className="fas fa-phone text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 className="text-[var(--text-primary)] font-medium">Téléphone</h4>
-                                    <a href="tel:+21699749793" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition">
-                                        +216 99 749 793
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <div className="flex items-start gap-4">
-                                <div className="mt-1 text-[var(--accent-blue)]">
-                                    <i className="fab fa-linkedin text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 className="text-[var(--text-primary)] font-medium">LinkedIn</h4>
-                                    <a 
-                                        href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition"
+                            <p className="text-[var(--text-secondary)] leading-relaxed text-lg">
+                                Transformons vos idées en solutions digitales innovantes. 
+                                Contactez-moi pour discuter de votre prochain projet.
+                            </p>
+                        </div>
+
+                        {/* Cartes de contact avancées */}
+                        <div className="space-y-4">
+                            {contactInfo.map((contact, index) => (
+                                <FadeIn key={contact.title} delay={index * 0.1}>
+                                    <a
+                                        href={contact.href}
+                                        target={contact.href.startsWith('http') ? "_blank" : undefined}
+                                        rel={contact.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                                        className="group block"
                                     >
-                                        Omar El Farouk Kortas
+                                        <div className="relative overflow-hidden bg-gradient-to-r from-[var(--card-bg)]/80 to-transparent backdrop-blur-xl p-6 rounded-2xl border border-[var(--border-color)]/50 hover:border-[var(--accent-blue)]/50 transition-all duration-500 transform hover:-translate-y-1">
+                                            {/* Effet de scan au hover */}
+                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                            
+                                            <div className="relative z-10 flex items-start gap-4">
+                                                {/* Icône avec cercle animé */}
+                                                <div className="relative">
+                                                    <div 
+                                                        className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                                                        style={{ 
+                                                            background: `linear-gradient(135deg, ${contact.color}20, ${contact.color}10)`,
+                                                            border: `2px solid ${contact.color}30`
+                                                        }}
+                                                    >
+                                                        <i 
+                                                            className={`${contact.icon} text-xl`}
+                                                            style={{ color: contact.color }}
+                                                        />
+                                                    </div>
+                                                    
+                                                    {/* Pulse ring */}
+                                                    <div 
+                                                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                        style={{
+                                                            boxShadow: `0 0 0 4px ${contact.color}20, 0 0 0 8px ${contact.color}10`
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                {/* Contenu */}
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center justify-between mb-1">
+                                                        <h4 className="font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-blue)] transition-colors duration-300">
+                                                            {contact.title}
+                                                        </h4>
+                                                        <i className="fas fa-external-link-alt text-xs text-[var(--text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                                    </div>
+                                                    
+                                                    <p className="text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300 break-all">
+                                                        {contact.value}
+                                                    </p>
+                                                    
+                                                    <p className="text-xs text-[var(--text-secondary)]/70 mt-1">
+                                                        {contact.description}
+                                                    </p>
+
+                                                    {/* Barre de progression décorative */}
+                                                    <div className="w-full h-0.5 bg-gray-700 rounded-full mt-3 overflow-hidden">
+                                                        <div 
+                                                            className="h-full rounded-full transition-all duration-1000 ease-out"
+                                                            style={{ 
+                                                                width: '0%',
+                                                                backgroundColor: contact.color
+                                                            }}
+                                                            ref={(el) => {
+                                                                if (el) {
+                                                                    const observer = new IntersectionObserver(([entry]) => {
+                                                                        if (entry.isIntersecting) {
+                                                                            setTimeout(() => {
+                                                                                el.style.width = '100%';
+                                                                            }, index * 200);
+                                                                        }
+                                                                    });
+                                                                    observer.observe(el);
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </a>
-                                </div>
-                            </div>
+                                </FadeIn>
+                            ))}
+                        </div>
+
+                        {/* Statut en ligne */}
+                        <div className="flex items-center gap-3 p-4 bg-green-900/20 border border-green-700/50 rounded-xl">
+                            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            <span className="text-green-400 text-sm font-medium">
+                                Disponible pour de nouveaux projets
+                            </span>
                         </div>
                     </div>
                 </FadeIn>
 
-                {/* Partie droite - Formulaire */}
+                {/* Section droite - Formulaire avancé */}
                 <FadeIn direction="right" delay={0.2}>
-                    <div className="bg-[var(--card-bg)] backdrop-blur-lg p-6 rounded-xl border border-[var(--border-color)] hover:border-[var(--accent-blue)] transition duration-300">
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            {/* Champ Nom complet */}
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                    Nom complet <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    disabled={isSubmitting}
-                                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
-                                    placeholder="Votre nom"
-                                />
+                    <div 
+                        className="relative overflow-hidden bg-gradient-to-br from-[var(--card-bg)]/95 to-transparent backdrop-blur-2xl rounded-3xl border border-[var(--border-color)]/40 transition-all duration-500"
+                        onMouseMove={handleMouseMove}
+                    >
+                        {/* Effet de lumière qui suit la souris */}
+                        <div 
+                            className="absolute w-96 h-96 rounded-full opacity-0 hover:opacity-10 blur-3xl transition-opacity duration-500 pointer-events-none"
+                            style={{
+                                background: 'radial-gradient(circle, #3B82F6 0%, transparent 70%)',
+                                left: mousePosition.x - 192,
+                                top: mousePosition.y - 192,
+                            }}
+                        />
+
+                        <div className="relative z-20 p-8">
+                            {/* Header du formulaire */}
+                            <div className="text-center mb-8">
+                                <h4 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+                                    Démarrons le projet
+                                </h4>
+                                <div className="w-16 h-1 bg-gradient-to-r from-[var(--accent-blue)] to-cyan-400 mx-auto rounded-full"></div>
                             </div>
-                            
-                            {/* Champ Email */}
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                    Email <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    disabled={isSubmitting}
-                                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
-                                    placeholder="votre@email.com"
-                                />
-                            </div>
-                            
-                            {/* Champ Message */}
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                                    Message <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows="5"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                    disabled={isSubmitting}
-                                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:border-transparent transition"
-                                    placeholder="Dites-moi en quoi puis-je vous aider..."
-                                ></textarea>
-                            </div>
-                            
-                            {/* Bouton d'envoi */}
-                            <div className="pt-2">
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className={`w-full flex justify-center items-center px-6 py-3 rounded-lg font-medium transition duration-300 ${
-                                        isSubmitting
-                                            ? 'bg-[var(--accent-blue)]/70 cursor-not-allowed'
-                                            : 'bg-[var(--accent-blue)] hover:bg-[var(--accent-blue)]/90 transform hover:scale-[1.02]'
-                                    } text-[var(--text-primary)]`}
-                                >
-                                    {isSubmitting ? (
-                                        <>
-                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                            </svg>
-                                            Envoi en cours...
-                                        </>
-                                    ) : (
-                                        'Envoyer le message'
-                                    )}
-                                </button>
-                            </div>
-                        </form>
-                        
-                        {/* Message de statut */}
-                        {status.message && (
-                            <div className={`mt-4 p-4 rounded-lg border ${
-                                status.type === "success" 
-                                    ? "bg-green-900/20 border-green-700 text-green-400" 
-                                    : "bg-red-900/20 border-red-700 text-red-400"
-                            }`}>
-                                <div className="flex items-start gap-3">
-                                    <div className="mt-0.5">
-                                        {status.type === "success" ? (
-                                            <i className="fas fa-check-circle"></i>
-                                        ) : (
-                                            <i className="fas fa-exclamation-circle"></i>
+
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                {/* Champ Nom */}
+                                <div className="group">
+                                    <label htmlFor="name" className="block text-sm font-semibold text-[var(--text-secondary)] mb-3 transition-colors duration-300 group-focus-within:text-[var(--accent-blue)]">
+                                        Nom complet <span className="text-red-400">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            onFocus={() => setFocusedField('name')}
+                                            onBlur={() => setFocusedField(null)}
+                                            required
+                                            disabled={isSubmitting}
+                                            className="w-full px-5 py-4 bg-[var(--bg-primary)]/80 border-2 border-[var(--border-color)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[var(--accent-blue)] focus:bg-[var(--bg-primary)] transition-all duration-300 group"
+                                            placeholder="Votre nom complet"
+                                        />
+                                        
+                                        {/* Indicateur de focus */}
+                                        <div className={`absolute inset-0 rounded-xl transition-opacity duration-300 pointer-events-none ${focusedField === 'name' ? 'opacity-100' : 'opacity-0'}`}>
+                                            <div className="absolute inset-0 rounded-xl shadow-lg shadow-blue-500/20"></div>
+                                        </div>
+                                        
+                                        {/* Barre de progression */}
+                                        {formData.name && (
+                                            <div className="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-blue)] rounded-full transition-all duration-300"
+                                                 style={{ width: `${getFieldProgress('name')}%` }} />
                                         )}
                                     </div>
-                                    <div>{status.message}</div>
                                 </div>
+
+                                {/* Champ Email */}
+                                <div className="group">
+                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--text-secondary)] mb-3 transition-colors duration-300 group-focus-within:text-[var(--accent-blue)]">
+                                        Email <span className="text-red-400">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            onFocus={() => setFocusedField('email')}
+                                            onBlur={() => setFocusedField(null)}
+                                            required
+                                            disabled={isSubmitting}
+                                            className="w-full px-5 py-4 bg-[var(--bg-primary)]/80 border-2 border-[var(--border-color)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[var(--accent-blue)] focus:bg-[var(--bg-primary)] transition-all duration-300"
+                                            placeholder="votre@email.com"
+                                        />
+                                        
+                                        <div className={`absolute inset-0 rounded-xl transition-opacity duration-300 pointer-events-none ${focusedField === 'email' ? 'opacity-100' : 'opacity-0'}`}>
+                                            <div className="absolute inset-0 rounded-xl shadow-lg shadow-blue-500/20"></div>
+                                        </div>
+                                        
+                                        {formData.email && (
+                                            <div className="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-blue)] rounded-full transition-all duration-300"
+                                                 style={{ width: `${getFieldProgress('email')}%` }} />
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Champ Message */}
+                                <div className="group">
+                                    <label htmlFor="message" className="block text-sm font-semibold text-[var(--text-secondary)] mb-3 transition-colors duration-300 group-focus-within:text-[var(--accent-blue)]">
+                                        Message <span className="text-red-400">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <textarea
+                                            id="message"
+                                            name="message"
+                                            rows="6"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            onFocus={() => setFocusedField('message')}
+                                            onBlur={() => setFocusedField(null)}
+                                            required
+                                            disabled={isSubmitting}
+                                            className="w-full px-5 py-4 bg-[var(--bg-primary)]/80 border-2 border-[var(--border-color)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[var(--accent-blue)] focus:bg-[var(--bg-primary)] transition-all duration-300 resize-none"
+                                            placeholder="Décrivez votre projet, vos besoins, timeline..."
+                                        />
+                                        
+                                        <div className={`absolute inset-0 rounded-xl transition-opacity duration-300 pointer-events-none ${focusedField === 'message' ? 'opacity-100' : 'opacity-0'}`}>
+                                            <div className="absolute inset-0 rounded-xl shadow-lg shadow-blue-500/20"></div>
+                                        </div>
+                                        
+                                        {formData.message && (
+                                            <div className="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-blue)] rounded-full transition-all duration-300"
+                                                 style={{ width: `${getFieldProgress('message')}%` }} />
+                                        )}
+
+                                        {/* Compteur de caractères */}
+                                        <div className="absolute bottom-3 right-3 text-xs text-[var(--text-secondary)]/60">
+                                            {formData.message.length}/500
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Bouton d'envoi avancé */}
+                                <div className="pt-4">
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className={`group relative w-full overflow-hidden px-8 py-4 rounded-xl font-semibold text-white transition-all duration-500 transform ${
+                                            isSubmitting
+                                                ? 'bg-[var(--accent-blue)]/70 cursor-not-allowed scale-95'
+                                                : 'bg-gradient-to-r from-[var(--accent-blue)] to-cyan-500 hover:from-cyan-500 hover:to-[var(--accent-blue)] hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25'
+                                        }`}
+                                    >
+                                        {/* Effet de vagues au hover */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                        
+                                        <div className="relative z-10 flex items-center justify-center gap-3">
+                                            {isSubmitting ? (
+                                                <>
+                                                    {/* Spinner personnalisé */}
+                                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                                    <span>Envoi en cours...</span>
+                                                    <div className="flex gap-1">
+                                                        <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                                        <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                                        <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>Envoyer le message</span>
+                                                    <i className="fas fa-paper-plane transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                                                </>
+                                            )}
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            {/* Message de statut amélioré */}
+                            {status.message && (
+                                <div className={`mt-6 p-4 rounded-2xl border backdrop-blur-sm transition-all duration-500 transform ${
+                                    status.type === "success" 
+                                        ? "bg-green-900/30 border-green-500/50 text-green-400 scale-100" 
+                                        : "bg-red-900/30 border-red-500/50 text-red-400 scale-100"
+                                }`}>
+                                    <div className="flex items-start gap-3">
+                                        <div className="mt-0.5 text-lg">
+                                            {status.type === "success" ? (
+                                                <i className="fas fa-check-circle"></i>
+                                            ) : (
+                                                <i className="fas fa-exclamation-triangle"></i>
+                                            )}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="font-medium mb-1">
+                                                {status.type === "success" ? "Message envoyé !" : "Erreur"}
+                                            </div>
+                                            <div className="text-sm opacity-90">{status.message}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Footer du formulaire */}
+                            <div className="mt-8 pt-6 border-t border-[var(--border-color)]/30 text-center">
+                                <p className="text-xs text-[var(--text-secondary)]/70">
+                                    <i className="fas fa-shield-alt mr-2"></i>
+                                    Vos données sont sécurisées et ne seront jamais partagées
+                                </p>
                             </div>
-                        )}
+                        </div>
                     </div>
                 </FadeIn>
+            </div>
+
+            {/* Section de réseaux sociaux flottante */}
+            <div className="fixed bottom-8 right-8 z-50 hidden lg:block">
+                <div className="flex flex-col gap-3">
+                    {[
+                        { icon: "fab fa-github", href: "#", color: "#333" },
+                        { icon: "fab fa-linkedin", href: "https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/", color: "#0077B5" },
+                    ].map((social, index) => (
+                        <a
+                            key={index}
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group w-12 h-12 bg-[var(--card-bg)]/90 backdrop-blur-xl border border-[var(--border-color)]/50 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                            style={{ '--hover-color': social.color }}
+                        >
+                            <i className={`${social.icon} text-lg text-[var(--text-secondary)] group-hover:text-[var(--accent-blue)] transition-colors duration-300`} />
+                        </a>
+                    ))}
+                </div>
             </div>
         </Section>
     );
 };
 
         // Footer amélioré
-        const Footer = () => {
-            return (
-                <footer className="bg-[var(--card-bg)] py-8">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <AnimatedText delay={0.2}>
-                            <p className="text-[var(--text-secondary)] mb-4">© 2025 Omar El Farouk. Tous droits réservés.</p>
+const Footer = () => {
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const [hoveredSocial, setHoveredSocial] = useState(-1);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    const socialLinks = [
+        {
+            name: "LinkedIn",
+            icon: "fab fa-linkedin",
+            href: "https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/",
+            color: "#0077B5",
+            description: "Professional Network"
+        },
+        {
+            name: "GitHub",
+            icon: "fab fa-github",
+            href: "https://github.com/omarkortas",
+            color: "#333",
+            description: "Code Repository"
+        },
+
+        {
+            name: "Email",
+            icon: "fas fa-envelope",
+            href: "mailto:omaromarkortas@gmail.com",
+            color: "#EA4335",
+            description: "Direct Contact"
+        }
+    ];
+
+    const quickLinks = [
+        { name: "Accueil", href: "#accueil" },
+        { name: "À Propos", href: "#a-propos" },
+        { name: "Compétences", href: "#compétences" },
+        { name: "Projets", href: "#projects" },
+        { name: "Services", href: "#services" },
+        { name: "Expériences", href: "#expériences" },
+        { name: "Statistiques", href: "#statistiques" },
+        { name: "Contact", href: "#contact" }
+    ];
+
+    const skills = [
+        "React", "Next.js", "TypeScript", "Node.js", 
+        "Python", "C", "MongoDB", 
+    ];
+
+    // Horloge en temps réel
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePosition({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        });
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({ 
+            top: 0, 
+            behavior: 'smooth' 
+        });
+    };
+
+    return (
+        <footer 
+className="relative overflow-hidden bg-gradient-to-br from-[var(--bg-primary)]/70 via-[var(--accent-blue)]/50 to-[var(--bg-primary)]/70 backdrop-blur-2xl border-t border-[var(--border-color)]/50"
+  onMouseMove={handleMouseMove}
+        >
+            {/* Grille de circuit en arrière-plan */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none">
+                <svg className="w-full h-full" viewBox="0 0 1200 400">
+                    <defs>
+                        <pattern id="circuit" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                            <circle cx="30" cy="30" r="2" fill="var(--accent-blue)" opacity="0.3"/>
+                            <line x1="30" y1="0" x2="30" y2="30" stroke="var(--accent-blue)" strokeWidth="0.5" opacity="0.3"/>
+                            <line x1="0" y1="30" x2="30" y2="30" stroke="var(--accent-blue)" strokeWidth="0.5" opacity="0.3"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#circuit)"/>
+                </svg>
+            </div>
+
+            {/* Effet de lumière suivant la souris */}
+            <div 
+                className="absolute w-96 h-96 rounded-full opacity-0 hover:opacity-10 blur-3xl transition-opacity duration-500 pointer-events-none"
+                style={{
+                    background: 'radial-gradient(circle, #3B82F6 0%, transparent 70%)',
+                    left: mousePosition.x - 192,
+                    top: mousePosition.y - 192,
+                }}
+            />
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                {/* Section principale */}
+                <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-12">
+                    {/* Colonne 1 - Informations principales */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <AnimatedText delay={0.1}>
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold bg-gradient-to-r from-[var(--accent-blue)] to-cyan-400 bg-clip-text text-transparent">
+                                    Omar El Farouk Kortas
+                                </h3>
+                                <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    <span className="text-sm">Computer Engineer</span>
+                                </div>
+                                <p className="text-[var(--text-secondary)] leading-relaxed max-w-md text-justify">
+                                    Passionné par la création d'expériences digitales innovantes et performantes. 
+                                    Transformons vos idées en solutions technologiques d'exception.
+                                </p>
+                            </div>
                         </AnimatedText>
-                        <div className="flex justify-center gap-6">
-                            <a href="https://www.linkedin.com/in/omar-el-farouk-kortas-8b4613294/" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition transform hover:scale-110">
-                                <i className="fab fa-linkedin text-xl"></i>
-                            </a>
-                            <a href="https://github.com/omarkortas" className="text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition transform hover:scale-110">
-                                <i className="fab fa-github text-xl"></i>
-                            </a>
-                        </div>
+
+                        {/* Terminal de statut */}
+                        <AnimatedText delay={0.3}>
+                            <div className="bg-gray-900/80 backdrop-blur-xl rounded-xl border border-gray-700/50 overflow-hidden">
+                                <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-700/50">
+                                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                                    <span className="text-xs text-gray-400 font-mono">status.dev</span>
+                                </div>
+                                <div className="p-4 font-mono text-xs space-y-1">
+                                    <div className="text-green-400">
+                                        <span className="text-gray-500">$</span> whoami
+                                    </div>
+                                    <div className="text-cyan-400">→ Senior Full Stack Developer</div>
+                                    <div className="text-blue-400">→ Available for projects</div>
+                                    <div className="text-yellow-400">
+                                        → Local time: {currentTime.toLocaleTimeString('fr-FR')}
+                                    </div>
+                                </div>
+                            </div>
+                        </AnimatedText>
                     </div>
-                </footer>
-            );
-        };
+
+                    {/* Colonne 2 - Liens rapides */}
+                    <div className="space-y-6">
+                        <AnimatedText delay={0.2}>
+                            <h4 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+                                Navigation
+                            </h4>
+                            <nav className="space-y-3">
+                                {quickLinks.map((link, index) => (
+                                    <a
+                                        key={link.name}
+                                        href={link.href}
+                                        className="group flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition-all duration-300 transform hover:translate-x-2"
+                                    >
+                                        <div className="w-1 h-1 bg-[var(--text-secondary)] rounded-full group-hover:bg-[var(--accent-blue)] group-hover:scale-150 transition-all duration-300"></div>
+                                        <span className="text-sm">{link.name}</span>
+                                        <i className="fas fa-arrow-right text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                                    </a>
+                                ))}
+                            </nav>
+                        </AnimatedText>
+                    </div>
+
+                    {/* Colonne 3 - Stack technique */}
+                    <div className="space-y-6">
+                        <AnimatedText delay={0.4}>
+                            <h4 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+                                Stack Technique
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                                {skills.map((skill, index) => (
+                                    <span
+                                        key={skill}
+                                        className="px-3 py-1 text-xs font-medium bg-[var(--accent-blue)]/10 border border-[var(--accent-blue)]/30 text-[var(--accent-blue)] rounded-full hover:bg-[var(--accent-blue)]/20 transition-colors duration-300 cursor-default"
+                                        style={{ animationDelay: `${index * 100}ms` }}
+                                    >
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        </AnimatedText>
+
+                        {/* Métriques rapides */}
+                        <AnimatedText delay={0.5}>
+                            <div className="grid grid-cols-2 gap-4 mt-6">
+                                <div className="text-center p-3 bg-[var(--card-bg)]/50 rounded-lg border border-[var(--border-color)]/30">
+                                    <div className="text-xl font-bold text-[var(--accent-blue)]">10+</div>
+                                    <div className="text-xs text-[var(--text-secondary)]">Projets</div>
+                                </div>
+                                <div className="text-center p-3 bg-[var(--card-bg)]/50 rounded-lg border border-[var(--border-color)]/30">
+                                    <div className="text-xl font-bold text-[var(--accent-blue)]">1+</div>
+                                    <div className="text-xs text-[var(--text-secondary)]">Années</div>
+                                </div>
+                            </div>
+                        </AnimatedText>
+                    </div>
+                </div>
+
+                
+
+                {/* Footer final */}
+                <div className="border-t border-[var(--border-color)]/30 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <AnimatedText delay={0.7}>
+                        <div className="text-center md:text-left">
+                            <p className="text-[var(--text-secondary)] text-sm mb-2">
+                                © 2025 Omar El Farouk Kortas. Tous droits réservés.
+                            </p>
+                        </div>
+                    </AnimatedText>
+
+                    {/* Bouton retour en haut */}
+                    <AnimatedText delay={0.8}>
+                        <button
+                            onClick={scrollToTop}
+                            className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--accent-blue)]/20 to-cyan-500/20 border border-[var(--accent-blue)]/30 rounded-full text-[var(--accent-blue)] hover:from-[var(--accent-blue)]/30 hover:to-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+                        >
+                            <span className="text-sm font-medium">Retour en haut</span>
+                            <i className="fas fa-arrow-up text-sm group-hover:-translate-y-1 transition-transform duration-300"></i>
+                        </button>
+                    </AnimatedText>
+                </div>
+
+            
+            </div>
+
+            {/* Particules flottantes */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {Array.from({ length: 20 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute w-1 h-1 bg-[var(--accent-blue)] rounded-full opacity-20 animate-pulse"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            animationDelay: `${i * 0.5}s`,
+                            animationDuration: `${3 + (i % 3)}s`
+                        }}
+                    />
+                ))}
+            </div>
+        </footer>
+    );
+};
 
         // Composant principal
        const App = () => {
